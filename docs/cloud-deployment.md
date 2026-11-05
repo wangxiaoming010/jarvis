@@ -24,7 +24,7 @@ npm --version
 下面命令在事先准备好的、当前账号可写的专用部署父目录执行。不要在现有业务目录执行，不使用 `git reset --hard` 覆盖其他代码。
 
 ```bash
-git clone --branch feature/cloud-mac-control --single-branch https://github.com/wangxiaoming010/jarvis.git jarvis-cloud
+git clone --branch main --single-branch https://github.com/wangxiaoming010/jarvis.git jarvis-cloud
 cd jarvis-cloud
 npm ci
 npm run build
@@ -64,7 +64,7 @@ ssh -N \
 
 ## 配对新的 Mac 工作区
 
-在 Mac 的新项目目录安装和构建同一开发分支，不覆盖正在运行的本地版本。
+在 Mac 的新项目目录安装和构建与云端相同的提交版本，不覆盖正在运行的本地版本。
 
 ```bash
 npm ci
