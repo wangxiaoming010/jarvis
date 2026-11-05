@@ -1,19 +1,19 @@
-import { defineConfig } from '@playwright/test';
+import { defineConfig } from "@playwright/test";
 export default defineConfig({
-  testDir: 'tests/e2e',
-  fullyParallel: false,
+  testDir: "tests/browser",
   workers: 1,
+  timeout: 45000,
   use: {
-    baseURL: 'http://127.0.0.1:1421',
-    viewport: { width: 1440, height: 940 },
-    trace: 'retain-on-failure',
+    baseURL: "http://127.0.0.1:4331",
+    channel: "chrome",
+    viewport: { width: 1440, height: 1000 },
+    screenshot: "only-on-failure",
+    trace: "retain-on-failure",
   },
   webServer: {
-    command: 'node scripts/dev.mjs --test',
-    url: 'http://127.0.0.1:1421',
+    command: "npx tsx tests/browser-server.ts",
+    url: "http://127.0.0.1:4331/api/health",
     reuseExistingServer: false,
-    gracefulShutdown: { signal: 'SIGTERM', timeout: 5000 },
-    timeout: 60000,
+    timeout: 30000,
   },
-  reporter: 'list',
 });
