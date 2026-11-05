@@ -22,6 +22,8 @@ import {
   type Snapshot,
   type Settings,
 } from "../shared/domain.ts";
+import { UpdateEmployee } from "../shared/relay.ts";
+import { ExecutionLease } from "./lease.ts";
 import type { Gateways, ModelInput, SecretProfile } from "./ports.ts";
 import { log } from "./log.ts";
 import { Store, secretsDigest, type Secrets, type State } from "./store.ts";
@@ -40,9 +42,6 @@ const now = () => new Date().toISOString();
 function fail(status: number, code: string, message: string): never {
   throw new WorkspaceError(status, code, message);
 }
-const UpdateEmployee = CreateEmployee.partial()
-  .extend({ enabled: z.boolean().optional() })
-  .strict();
 const ModelReplySchema = z.object({
   text: z.string().max(100000),
   proposals: z
@@ -138,16 +137,23 @@ export class Workspace {
   private ticking = false;
   private closing = false;
   private closed = false;
+  private readonly lease?: ExecutionLease;
+  private readonly removeLeaseListener?: () => void;
 
-  constructor({ dataDir, gateways }: { dataDir: string; gateways: Gateways }) {
+  constructor({ dataDir, gateways, lease }: {
+    dataDir: string;
+    gateways: Gateways;
+    lease?: ExecutionLease;
+  }) {
     this.store = new Store(dataDir);
     this.gateways = gateways;
+    this.lease = lease;
     mkdirSync(join(this.store.dataDir, "tasks"), {
       recursive: true,
       mode: 0o700,
     });
     this.store.transaction((state) => {
-      // 重启只恢复消息读取，不重放可能产生本机副作用的任务。
+      // 远程重启不能重付费处理已开始的消息；本地模式保留原恢复行为。
       for (const task of state.tasks) {
         if (task.state.kind === "running" || task.state.kind === "cancelling") {
           transition(task, {
@@ -166,12 +172,59 @@ export class Workspace {
         }
       }
       for (const item of state.inbox)
-        if (item.state === "processing") item.state = "pending";
+        if (item.state === "processing") {
+          item.state = lease ? "failed" : "pending";
+          if (lease) notice(state, "error", "消息处理在重启前未确认完成，未自动重试。请核实后发送新消息。");
+        }
     });
+    this.removeLeaseListener = lease?.onLost(() => this.interruptForLease());
     this.timer = setInterval(() => {
       void this.tick();
     }, 150);
     this.timer.unref();
+  }
+
+  remoteLease(): ExecutionLease | undefined {
+    return this.lease;
+  }
+
+  publicationSecrets(): string[] {
+    const secrets = this.store.secrets();
+    return [secrets.main?.apiKey, secrets.attention?.apiKey]
+      .filter((value): value is string => Boolean(value));
+  }
+
+  private interruptForLease(): void {
+    if (this.closed) return;
+    try {
+      this.store.transaction((state) => {
+        for (const task of state.tasks) {
+          if (task.state.kind === "running" || task.state.kind === "cancelling") {
+            transition(task, {
+              kind: "interrupted",
+              reason: "云端连接租约失效，已请求中断。请核实进程和目录后重新批准。",
+            });
+            task.approval = null;
+            notice(state, "decision", `需核实连接中断任务：${task.title}`, task.id);
+          } else if (task.state.kind === "queued") {
+            transition(task, {
+              kind: "needs_approval",
+              reason: "云端连接租约失效，旧授权作废，请重新批准。",
+            });
+            task.approval = null;
+          }
+        }
+        for (const item of state.inbox) {
+          if (item.state !== "processing") continue;
+          item.state = "failed";
+          notice(state, "error", "连接中断时消息调用结果未知，未自动重试。请核实后发送新消息。");
+        }
+      });
+    } finally {
+      // 即使本地落盘失败也必须发送中止信号，不能继续持有外部执行权限。
+      for (const job of this.jobs.values()) job.controller.abort();
+      for (const job of this.inboxJobs.values()) job.controller.abort();
+    }
   }
 
   async snapshot(): Promise<Snapshot> {
@@ -386,6 +439,7 @@ export class Workspace {
     const parsed = TaskAction.parse(input);
     let statuses: z.infer<typeof ExecutorStatusSchema>[] = [];
     if (parsed.action === "approve") {
+      this.lease?.assertValid();
       const current = this.store.read();
       const task = taskIn(current, id);
       if (task.version !== parsed.version)
@@ -414,6 +468,7 @@ export class Workspace {
           "指定执行工具不可用，未批准任务，也不会替换工具。",
         );
     }
+    if (parsed.action === "approve") this.lease?.assertValid();
     const task = this.store.transaction((state) => {
       const task = taskIn(state, id);
       if (task.version !== parsed.version)
@@ -453,7 +508,7 @@ export class Workspace {
             workspace,
             scope: "workspace-write",
             approvedAt: now(),
-            expiresAt: new Date(Date.now() + 30 * 60_000).toISOString(),
+            expiresAt: new Date(Date.now() + (this.lease ? 2 : 30) * 60_000).toISOString(),
           };
           break;
         }
@@ -730,7 +785,7 @@ export class Workspace {
   }
 
   private async tick(): Promise<void> {
-    if (this.closing || this.ticking) return;
+    if (this.closing || this.ticking || (this.lease && !this.lease.valid)) return;
     this.ticking = true;
     try {
       this.observeRules();
@@ -799,6 +854,7 @@ export class Workspace {
   private scheduleInbox(): void {
     const state = this.store.read();
     for (const item of state.inbox) {
+      if (this.lease && !this.lease.valid) return;
       if (item.state !== "pending" || this.inboxJobs.has(item.employeeId))
         continue;
       const controller = new AbortController();
@@ -860,23 +916,32 @@ export class Workspace {
           })),
       };
       if (!direct) {
+        const profile = this.profile("attention");
+        this.lease?.assertValid(signal);
         const shouldRespond = z
           .boolean()
           .parse(
             await this.gateways.models.attention(
-              this.profile("attention"),
+              profile,
               input,
               signal,
+              () => this.lease?.assertValid(signal),
             ),
           );
+        this.lease?.assertValid(signal);
         if (!shouldRespond) {
           this.finishInbox(id);
           return;
         }
       }
+      const profile = this.profile("main");
+      this.lease?.assertValid(signal);
       const reply = ModelReplySchema.parse(
-        await this.gateways.models.respond(this.profile("main"), input, signal),
+        await this.gateways.models.respond(
+          profile, input, signal, () => this.lease?.assertValid(signal),
+        ),
       );
+      this.lease?.assertValid(signal);
       if (signal.aborted || this.closed) return;
       this.store.transaction((current) => {
         const pending = current.inbox.find((row) => row.id === id)!;
@@ -910,7 +975,7 @@ export class Workspace {
         pending.state = "done";
       });
     } catch (error) {
-      if (this.closed || signal.aborted) return;
+      if (this.closed || (this.lease && !this.lease.valid) || signal.aborted) return;
       log("error", "message.failed", {
         code: error instanceof WorkspaceError ? error.code : "MODEL_ERROR",
       });
@@ -939,8 +1004,9 @@ export class Workspace {
     const statuses = z
       .array(ExecutorStatusSchema)
       .parse(await this.gateways.executors.status());
-    if (this.closing) return;
+    if (this.closing || (this.lease && !this.lease.valid)) return;
     for (const original of queued) {
+      if (this.lease && !this.lease.valid) return;
       state = this.store.read();
       if (this.jobs.size >= state.settings.maxWorkers) break;
       const task = taskIn(state, original.id);
@@ -1038,17 +1104,22 @@ export class Workspace {
   ): Promise<void> {
     try {
       const approval = task.approval!;
+      this.lease?.assertValid(signal);
       log("info", "task.started", { taskId: task.id });
+      const request = {
+        executor: approval.executor,
+        workspace: approval.workspace,
+        instruction: `${task.instruction}\n\n验收标准：\n${task.criteria.map((item) => `- ${item}`).join("\n") || "按任务要求提交可供人工检查的结果。"}\n\n只在本任务专用目录中工作。不得自行扩大权限。`,
+        model: approval.model,
+        signal,
+        beforeStart: () => this.lease?.assertValid(signal),
+      };
       const result = ExecutionReplySchema.parse(
-        await this.gateways.executors.run({
-          executor: approval.executor,
-          workspace: approval.workspace,
-          instruction: `${task.instruction}\n\n验收标准：\n${task.criteria.map((item) => `- ${item}`).join("\n") || "按任务要求提交可供人工检查的结果。"}\n\n只在本任务专用目录中工作。不得自行扩大权限。`,
-          model: approval.model,
-          signal,
-        }),
+        await this.gateways.executors.run(request),
       );
       if (this.closed) return;
+      // 休眠恢复时结果可能早于到期定时器到达，落盘前仍需同步核对授权。
+      this.lease?.assertValid();
       this.store.transaction((state) => {
         const current = taskIn(state, task.id);
         if (
@@ -1082,10 +1153,10 @@ export class Workspace {
       });
       log("info", "task.returned", { taskId: task.id });
     } catch (error) {
-      if (this.closed) return;
+      if (this.closed || (this.lease && !this.lease.valid)) return;
       log("error", "task.execution_failed", {
         taskId: task.id,
-        code: signal.aborted ? "CANCEL_REQUESTED" : "EXECUTION_ERROR",
+        code: signal.aborted ? (this.lease && !this.lease.valid ? "LEASE_LOST" : "CANCEL_REQUESTED") : "EXECUTION_ERROR",
       });
       this.store.transaction((state) => {
         const current = taskIn(state, task.id);
@@ -1128,6 +1199,8 @@ export class Workspace {
     if (this.closing) return;
     this.closing = true;
     clearInterval(this.timer);
+    if (this.lease) this.interruptForLease();
+    this.removeLeaseListener?.();
     this.store.transaction((state) => {
       for (const task of state.tasks)
         if (task.state.kind === "running")
@@ -1157,7 +1230,7 @@ export class Workspace {
           task.approval = null;
         }
       for (const item of state.inbox)
-        if (item.state === "processing") item.state = "pending";
+        if (item.state === "processing") item.state = this.lease ? "failed" : "pending";
     });
     this.closed = true;
     this.store.close();

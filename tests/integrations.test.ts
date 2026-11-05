@@ -522,3 +522,54 @@ test("metadata-only providers never silently claim unsupported thinking behavior
   );
   assert.equal(called, false);
 });
+
+test("execution rechecks connection authority after asynchronous CLI probing", async () => {
+  let ready = false;
+  let spawned = false;
+  const gateways = createGateways({
+    probe: async () => {
+      await Promise.resolve();
+      ready = true;
+      return { available: true, detail: "fixture" };
+    },
+    spawn: () => {
+      spawned = true;
+      throw new Error("must not spawn after lease loss");
+    },
+  });
+  await assert.rejects(
+    gateways.executors.run(
+      execution({
+        beforeStart: () => {
+          assert.equal(ready, true);
+          throw new Error("LEASE_EXPIRED");
+        },
+      }),
+    ),
+    /LEASE_EXPIRED/,
+  );
+  assert.equal(spawned, false);
+});
+
+test("model and attention requests check connection authority at the HTTP send point", async () => {
+  let requests = 0;
+  let checks = 0;
+  const gateways = createGateways({
+    fetch: async () => {
+      requests++;
+      return json(openai("true"));
+    },
+  });
+  const guard = () => {
+    checks++;
+    throw new Error("lease no longer valid");
+  };
+  await assert.rejects(
+    gateways.models.respond(profile, input, signal(), guard),
+  );
+  await assert.rejects(
+    gateways.models.attention(profile, input, signal(), guard),
+  );
+  assert.equal(checks, 2);
+  assert.equal(requests, 0);
+});

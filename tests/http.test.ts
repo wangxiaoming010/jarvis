@@ -109,6 +109,7 @@ test("HTTP 验证本机身份、跨站防护、幂等、密钥脱敏和静态边
     assert.equal(login.status, 200);
     cookie = login.headers.get("set-cookie")?.split(";")[0] || "";
     assert.ok(cookie);
+    assert.ok(cookie.startsWith(`jarvis_local_${port}=`), "不同本机端口不覆盖旧版会话 cookie");
     assert.match(
       login.headers.get("set-cookie") || "",
       /HttpOnly.*SameSite=Strict/,

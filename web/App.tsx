@@ -1,12 +1,16 @@
 import React, { FormEvent, useCallback, useEffect, useState } from "react";
 import {
   PROVIDERS,
-  SnapshotSchema,
   type Snapshot,
   type Task,
   type Employee,
   type ModelConfig,
 } from "../shared/domain";
+
+import { WorkbenchClient } from "./client";
+import { CloudPanel } from "./CloudPanel";
+import type { CloudView } from "../shared/relay";
+const client = new WorkbenchClient();
 
 type Page = "总览" | "任务" | "数字员工" | "会话" | "交付物" | "设置";
 type Modal =
@@ -43,27 +47,6 @@ const date = (s: string) =>
     hour: "2-digit",
     minute: "2-digit",
   });
-async function request(
-  path: string,
-  method = "GET",
-  body?: unknown,
-): Promise<unknown> {
-  const response = await fetch(path, {
-    method,
-    credentials: "same-origin",
-    headers:
-      method === "GET"
-        ? {}
-        : { "Content-Type": "application/json", "X-Jarvis-Request": "1" },
-    ...(body === undefined ? {} : { body: JSON.stringify(body) }),
-  });
-  const data: unknown = await response.json();
-  if (!response.ok)
-    throw new Error(
-      `${typeof data === "object" && data !== null && "error" in data && typeof data.error === "string" ? data.error : "请求失败"} (${response.status})`,
-    );
-  return data;
-}
 function Field({
   label,
   children,
@@ -100,6 +83,10 @@ function Badge({
   return <span className={`badge ${tone}`}>{children}</span>;
 }
 function App() {
+  const [cloud, setCloud] = useState<CloudView | null>(null);
+  const [cloudMode, setCloudMode] = useState(false);
+  const [queuedNotice, setQueuedNotice] = useState("");
+  const [connectionError, setConnectionError] = useState("");
   const [snapshot, setSnapshot] = useState<Snapshot | null>(null),
     [login, setLogin] = useState(false),
     [token, setToken] = useState(""),
@@ -133,19 +120,25 @@ function App() {
     [input, setInput] = useState("");
   const refresh = useCallback(async () => {
     try {
-      const s = SnapshotSchema.parse(await request("/api/snapshot"));
-      setSnapshot(s);
+      await client.initialize();
+      setCloudMode(client.mode === "cloud");
+      const view = await client.read();
+      setSnapshot(view.snapshot);
+      setCloud(view.cloud);
+      setConnectionError("");
       setLogin(false);
     } catch (e) {
       if (e instanceof Error && /401|认证|会话|登录|unauth/i.test(e.message))
         setLogin(true);
-      else setError(e instanceof Error ? e.message : "读取失败");
+      else setConnectionError(e instanceof Error ? e.message : "读取失败");
     }
   }, []);
   const signIn = useCallback(
     async (t: string) => {
       try {
-        await request("/api/session", "POST", { token: t });
+        await client.signIn(t);
+        setCloudMode(client.mode === "cloud");
+        setError("");
         setToken("");
         setLogin(false);
         await refresh();
@@ -222,7 +215,11 @@ function App() {
     setBusy(true);
     setError("");
     try {
-      await request(path, method, body);
+      const receipt = await client.mutate(path, method, body);
+      if (receipt)
+        setQueuedNotice(
+          `派单 ${receipt.commandId.slice(0, 8)} 已由云端接收。请在派单回执中查看 Mac 应用结果。`,
+        );
       after?.();
       await refresh();
     } catch (e) {
@@ -270,7 +267,9 @@ function App() {
           <div className="brand-mark">J</div>
           <h1>欢迎使用 Jarvis</h1>
           <p>
-            这是仅在本机运行的工作台。请从本机启动器打开，或粘贴本机访问令牌。
+            {cloudMode
+              ? "通过 SSH 隧道访问。使用服务器初始化时设置的管理员密码登录。"
+              : "这是仅在本机运行的工作台。请从本机启动器打开，或粘贴本机访问令牌。"}
           </p>
           {error && (
             <div className="alert" role="alert">
@@ -278,18 +277,43 @@ function App() {
             </div>
           )}
           <form onSubmit={submit(() => void signIn(token))}>
-            <Field label="本机令牌">
+            <Field label={cloudMode ? "管理员密码" : "本机令牌"}>
               <input
                 type="password"
                 value={token}
                 onChange={(e) => setToken(e.target.value)}
                 required
-                autoComplete="off"
+                autoComplete={cloudMode ? "current-password" : "off"}
               />
             </Field>
             <button className="primary full">进入工作台</button>
           </form>
         </div>
+      </main>
+    );
+  const cloudPanel = cloud && (
+    <CloudPanel
+      view={cloud}
+      unavailable={connectionError}
+      client={client}
+      refresh={refresh}
+      onLogout={() => {
+        setLogin(true);
+        setSnapshot(null);
+        setCloud(null);
+        setQueuedNotice("");
+      }}
+    />
+  );
+  if (!snapshot && cloud)
+    return (
+      <main className="cloud-setup">
+        <h1>连接你的 Mac</h1>
+        <p>
+          新工作区的消息、记忆、任务和文本交付会上云。API Key、项目文件和 Codex
+          登录留在 Mac。先在 Mac 完成配对，首次同步后即可进入工作台。
+        </p>
+        {cloudPanel}
       </main>
     );
   if (!snapshot)
@@ -298,6 +322,7 @@ function App() {
         <div className="login-card">
           <div className="brand-mark">J</div>
           <h1>正在连接工作台</h1>
+          {connectionError && <p role="alert">{connectionError}</p>}
           {error && (
             <div className="alert" role="alert">
               {error}
@@ -436,8 +461,9 @@ function App() {
           ))}
         </nav>
         <div className="side-bottom">
-          <span className="status-dot" /> 本机工作空间{" "}
-          <small>LOCAL WORKSPACE</small>
+          <span className="status-dot" />{" "}
+          {cloudMode ? "私有云工作空间" : "本机工作空间"}{" "}
+          <small>{cloudMode ? "PRIVATE CLOUD" : "LOCAL WORKSPACE"}</small>
           <a href="/THIRD_PARTY_NOTICES.txt" target="_blank" rel="noreferrer">
             第三方许可
           </a>
@@ -466,6 +492,18 @@ function App() {
           </div>
         </header>
         <main className="content">
+          {cloudPanel}
+          {!cloudMode && connectionError && (
+            <p className="alert" role="alert">
+              连接失败，以下为上次状态。{connectionError}
+            </p>
+          )}
+          {queuedNotice && (
+            <p className="queued-notice" role="status">
+              {queuedNotice}
+              <button onClick={() => setQueuedNotice("")}>关闭</button>
+            </p>
+          )}
           {error && (
             <div className="alert" role="alert">
               {error}
@@ -984,7 +1022,9 @@ function App() {
               )}
             </>
           )}
-          {page === "设置" && <SettingsView snapshot={s} act={act} />}
+          {page === "设置" && (
+            <SettingsView snapshot={s} act={act} cloudMode={cloudMode} />
+          )}
         </main>
       </div>
       {modal && (
@@ -1365,7 +1405,11 @@ function App() {
                   </div>
                   <div>
                     <span>有效期</span>
-                    <strong>批准后 30 分钟</strong>
+                    <strong>
+                      {cloudMode
+                        ? "派单 2 分钟内送达；Mac 应用后授权 2 分钟"
+                        : "批准后 30 分钟"}
+                    </strong>
                   </div>
                 </div>
                 <p className="warning">
@@ -1554,7 +1598,15 @@ function ModelForm({
     </form>
   );
 }
-function SettingsView({ snapshot: s, act }: { snapshot: Snapshot; act: Act }) {
+function SettingsView({
+  snapshot: s,
+  act,
+  cloudMode,
+}: {
+  snapshot: Snapshot;
+  act: Act;
+  cloudMode: boolean;
+}) {
   const [maxWorkers, setMaxWorkers] = useState(s.settings.maxWorkers),
     [codexModel, setCodexModel] = useState(s.settings.codexModel),
     [attentionUseMain, setAttentionUseMain] = useState(
@@ -1572,11 +1624,33 @@ function SettingsView({ snapshot: s, act }: { snapshot: Snapshot; act: Act }) {
       <div className="privacy-note">
         <strong>关于数据与密钥</strong>
         <p>
-          保存并启用模型配置或主动发送消息时，必要内容和凭据会发送给你选择的供应商。密钥仅存本机，不会在页面回显。
+          {cloudMode
+            ? "新工作区的消息、记忆、任务和文本交付会保存在云端。API Key、供应商地址和模型配置只能在 Mac 本地工作台维护，凭据不会同步到云端。调用模型时，必要内容会发送给你配置的供应商。"
+            : "保存并启用模型配置或主动发送消息时，必要内容和凭据会发送给你选择的供应商。密钥仅存本机，不会在页面回显。"}
         </p>
       </div>
-      <ModelForm purpose="main" snapshot={s} act={act} />
-      <ModelForm purpose="attention" snapshot={s} act={act} />
+      {cloudMode ? (
+        <section className="panel">
+          <h2>模型配置只在 Mac 维护</h2>
+          <p>
+            在 Mac 本地工作台配置服务商、API Key、模型和思考模式。配置只能在 Mac
+            修改。云端仅展示服务商、模型和配置状态摘要，不接收 API Key。
+          </p>
+          {(["main", "attention"] as const).map((purpose) => (
+            <p key={purpose}>
+              {purpose === "main" ? "主会话模型" : "独立注意力模型"} ·{" "}
+              {s.settings[purpose]
+                ? `${s.settings[purpose]!.provider} / ${s.settings[purpose]!.model}`
+                : "未配置"}
+            </p>
+          ))}
+        </section>
+      ) : (
+        <>
+          <ModelForm purpose="main" snapshot={s} act={act} />
+          <ModelForm purpose="attention" snapshot={s} act={act} />
+        </>
+      )}
       <form
         className="panel model-form"
         onSubmit={(e) => {

@@ -1003,3 +1003,72 @@ details li {
     font-size: 10px;
   }
 }
+
+.cloud-setup {
+  max-width: 900px;
+  margin: 60px auto;
+  padding: 24px;
+}
+.cloud-panel {
+  border: 1px solid #c9d9e8;
+  background: #f1f6fa;
+  border-radius: 14px;
+  padding: 18px;
+  margin-bottom: 22px;
+}
+.cloud-heading {
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.cloud-heading p,
+.receipts p,
+.pair-code p {
+  color: #56677e;
+  font-size: 12px;
+  line-height: 1.7;
+}
+.cloud-heading .actions {
+  flex-shrink: 0;
+}
+.pair-code {
+  margin: 14px 0;
+}
+.pair-code input {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 8px;
+  font-family: monospace;
+}
+.receipts ul {
+  list-style: none;
+  padding: 0;
+  max-height: 260px;
+  overflow: auto;
+}
+.receipts li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 10px 0;
+  border-top: 1px solid #dce5ee;
+  font-size: 12px;
+}
+.receipts li time {
+  margin-left: auto;
+}
+.queued-notice {
+  padding: 12px 16px;
+  background: #edf5ff;
+  border-radius: 10px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.queued-notice button {
+  margin-left: auto;
+  flex-shrink: 0;
+}

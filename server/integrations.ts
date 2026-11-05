@@ -359,6 +359,7 @@ export function createGateways(
     input: ModelInput,
     signal: AbortSignal,
     attention: boolean,
+    beforeStart?: () => void,
   ): Promise<ModelReply> {
     const url = endpoint(profile);
     if (signal.aborted) throw new DOMException("请求已取消。", "AbortError");
@@ -373,10 +374,12 @@ export function createGateways(
         headers["x-api-key"] = profile.apiKey;
         headers["anthropic-version"] = "2023-06-01";
       } else headers.Authorization = `Bearer ${profile.apiKey}`;
+      const body = JSON.stringify(modelBody(profile, input, attention));
+      beforeStart?.();
       const response = await fetcher(url, {
         method: "POST",
         headers,
-        body: JSON.stringify(modelBody(profile, input, attention)),
+        body,
         signal: combined,
         redirect: "error",
       });
@@ -456,6 +459,8 @@ export function createGateways(
     ];
     if (request.model.trim()) args.push("--model", request.model.trim());
     args.push("-");
+    // CLI 探测包含异步等待，真正启动前必须重新核对远端连接租约。
+    request.beforeStart?.();
     return new Promise((resolve, reject) => {
       let child: ChildProcessWithoutNullStreams;
       try {
@@ -627,10 +632,10 @@ export function createGateways(
   }
   return {
     models: {
-      respond: (profile, input, signal) =>
-        request(profile, input, signal, false),
-      attention: async (profile, input, signal) => {
-        const result = await request(profile, input, signal, true);
+      respond: (profile, input, signal, beforeStart) =>
+        request(profile, input, signal, false, beforeStart),
+      attention: async (profile, input, signal, beforeStart) => {
+        const result = await request(profile, input, signal, true, beforeStart);
         const value = parseJson(result.text.trim());
         if (typeof value !== "boolean")
           failure("MODEL_PROTOCOL", "注意力模型必须返回 JSON 布尔值。");

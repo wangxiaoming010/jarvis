@@ -14,7 +14,12 @@
     "test": "tsx --test tests/*.test.ts",
     "test:e2e": "playwright test",
     "notices": "node scripts/notices.mjs",
-    "release:check": "node scripts/release-check.mjs"
+    "release:check": "node scripts/release-check.mjs",
+    "cloud:init": "tsx server/cloud-main.ts init",
+    "cloud:reset": "tsx server/cloud-main.ts reset",
+    "cloud:start": "tsx server/cloud-main.ts start",
+    "worker:pair": "tsx server/worker-pair.ts",
+    "worker:start": "tsx server/main.ts --worker"
   },
   "dependencies": {
     "react": "19.3.1",

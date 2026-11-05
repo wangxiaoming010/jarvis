@@ -22,6 +22,7 @@ import {
 } from "../shared/domain.ts";
 import { Workspace, WorkspaceError } from "./workspace.ts";
 import { log } from "./log.ts";
+import { UpdateEmployee } from "../shared/relay.ts";
 
 type Options = {
   workspace: Workspace;
@@ -81,6 +82,7 @@ function json(response: ServerResponse, value: unknown, status = 200): void {
 export function createHttpServer(options: Options) {
   const { workspace, origin, distDir } = options;
   const host = new URL(origin).host;
+  const cookieName = `jarvis_local_${new URL(origin).port}`;
   const sessions = new Map<string, number>();
   let bootstrapUsed = false;
   let failedLogins = 0;
@@ -89,8 +91,8 @@ export function createHttpServer(options: Options) {
     const token = (request.headers.cookie || "")
       .split(";")
       .map((s) => s.trim())
-      .find((s) => s.startsWith("jarvis_session="))
-      ?.slice(15);
+      .find((s) => s.startsWith(`${cookieName}=`))
+      ?.slice(cookieName.length + 1);
     if (!token) return false;
     const expires = sessions.get(token);
     if (!expires || expires < Date.now()) {
@@ -122,6 +124,8 @@ export function createHttpServer(options: Options) {
         )
           throw new HttpError(403, "ORIGIN_REJECTED", "请求来源校验失败。");
       }
+      if (method === "GET" && pathname === "/api/mode")
+        return json(response, { mode: "local" });
       if (method === "GET" && pathname === "/api/health")
         return json(response, { ok: true });
       if (method === "POST" && pathname === "/api/session") {
@@ -148,7 +152,7 @@ export function createHttpServer(options: Options) {
         sessions.set(token, Date.now() + 12 * 60 * 60 * 1000);
         response.setHeader(
           "Set-Cookie",
-          `jarvis_session=${token}; HttpOnly; SameSite=Strict; Path=/; Max-Age=43200`,
+          `${cookieName}=${token}; HttpOnly; SameSite=Strict; Path=/; Max-Age=43200`,
         );
         log("info", "session.created");
         return json(response, { ok: true });
@@ -183,9 +187,7 @@ export function createHttpServer(options: Options) {
             response,
             await workspace.updateEmployee(
               id,
-              CreateEmployee.partial()
-                .extend({ enabled: z.boolean().optional() })
-                .parse(await body(request)),
+              UpdateEmployee.parse(await body(request)),
             ),
           );
         if (method === "POST" && pathname === "/api/conversations")

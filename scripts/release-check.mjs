@@ -6,7 +6,7 @@ const paths = execFileSync("git", ["ls-files", "-z"], { encoding: "utf8" })
 const failures = [];
 for (const path of paths) {
   if (
-    /(^|\/)(\.jarvis|\.data|node_modules|dist|test-results|playwright-report)(\/|$)|(^|\/)\.env($|\.)|bootstrap-token|secrets\.json$/.test(
+    /(^|\/)(\.jarvis(?:-cloud|-worker)?|\.data|node_modules|dist|test-results|playwright-report)(\/|$)|(^|\/)\.env($|\.)|bootstrap-token|worker-credential\.json$|secrets\.json$|\.sqlite(?:-wal|-shm)?$/.test(
       path,
     )
   )

@@ -20,11 +20,13 @@ export interface ModelGateway {
     profile: SecretProfile,
     input: ModelInput,
     signal: AbortSignal,
+    beforeStart?: () => void,
   ): Promise<ModelReply>;
   attention(
     profile: SecretProfile,
     input: ModelInput,
     signal: AbortSignal,
+    beforeStart?: () => void,
   ): Promise<boolean>;
 }
 export interface ExecutionRequest {
@@ -33,6 +35,7 @@ export interface ExecutionRequest {
   instruction: string;
   model: string;
   signal: AbortSignal;
+  beforeStart?: () => void;
 }
 export interface ExecutionGateway {
   status(): Promise<

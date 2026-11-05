@@ -20,7 +20,7 @@ test("真实浏览器完成配置、协作、批准、交付、验收及窄屏�
     "Permission is hereby granted",
   );
   await noticePage.close();
-  await page.screenshot({ path: "../jarvis-next-preview.png", fullPage: true });
+  await page.screenshot({ path: "test-results/local-workbench.png", fullPage: true });
   const navigate = async (name: string) => {
     await page
       .locator("nav")

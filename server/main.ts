@@ -9,17 +9,21 @@ import { createGateways } from "./integrations.ts";
 import { createHttpServer } from "./http.ts";
 import { log } from "./log.ts";
 import { claimInstanceLock } from "./instance-lock.ts";
+import { ExecutionLease } from "./lease.ts";
+import { startWorker } from "./worker.ts";
+import { loadWorkerConfig } from "./worker-pair.ts";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const workerMode = process.env.JARVIS_MODE === "worker" || process.argv.includes("--worker");
 const dataDir = resolve(
-  process.env.JARVIS_DATA_DIR || resolve(root, ".jarvis"),
+  process.env.JARVIS_DATA_DIR || resolve(root, workerMode ? ".jarvis-worker" : ".jarvis"),
 );
 const port = z.coerce
   .number()
   .int()
   .min(1024)
   .max(65535)
-  .parse(process.env.JARVIS_PORT || 4320);
+  .parse(process.env.JARVIS_PORT || (workerMode ? 4322 : 4320));
 const origin = `http://127.0.0.1:${port}`;
 mkdirSync(dataDir, { recursive: true, mode: 0o700 });
 chmodSync(dataDir, 0o700);
@@ -37,7 +41,12 @@ writeFileSync(resolve(dataDir, "bootstrap-token"), bootstrapToken, {
   mode: 0o600,
 });
 chmodSync(resolve(dataDir, "bootstrap-token"), 0o600);
-const workspace = new Workspace({ dataDir, gateways: createGateways() });
+const lease = workerMode ? new ExecutionLease() : undefined;
+const workerConfig = workerMode ? loadWorkerConfig(dataDir) : undefined;
+const workspace = new Workspace({ dataDir, gateways: createGateways(), lease });
+const worker = workerConfig && lease ? startWorker({
+  workspace, dataDir, lease, ...workerConfig, sensitiveValues: [bootstrapToken],
+}) : undefined;
 const server = createHttpServer({
   workspace,
   origin,
@@ -51,6 +60,7 @@ async function stop(signal: string) {
   log("info", "service.stopping", { signal });
   server.close();
   try {
+    await worker?.stop();
     await workspace.close();
   } catch {
     log("error", "workspace.close_failed");
@@ -68,7 +78,10 @@ server.on("error", (error) => {
   log("error", "service.listen_failed", {
     code: "code" in error ? String(error.code) : "UNKNOWN",
   });
-  void workspace.close().finally(() => {
+  void (async () => {
+    await worker?.stop();
+    await workspace.close();
+  })().finally(() => {
     releaseLock();
     process.exit(1);
   });
@@ -76,7 +89,7 @@ server.on("error", (error) => {
 server.listen(port, "127.0.0.1", () => {
   log("info", "service.started", { port });
   process.stderr.write(
-    `Jarvis 工作台已启动：${origin}\n本机登录凭据保存在 .jarvis/bootstrap-token，不要提交或分享。\n`,
+    `Jarvis 工作台已启动：${origin}\n本机登录凭据保存在 ${workerMode ? ".jarvis-worker" : ".jarvis"}/bootstrap-token，不要提交或分享。\n`,
   );
   if (process.env.JARVIS_OPEN === "1" && process.platform === "darwin") {
     const browser = spawn("open", [`${origin}/#token=${bootstrapToken}`], {
