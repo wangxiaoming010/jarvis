@@ -2,11 +2,9 @@
 
 在自己的 Mac 上创建有角色、有记忆、能接任务的私人数字员工团队。
 
-本项目基于 [bug-origin/Personal-OpenBot-Group](https://github.com/bug-origin/Personal-OpenBot-Group)，保留其 MIT 许可证、版权声明和第三方许可。`jarvis` 是个人定制发行项目，不是 Grok、OpenAI 或原作者的官方产品。
-
 ## 当前版本
 
-- 复用上游本地聊天、Bot 角色、记忆、任务委托和交付机制。
+- 支持本地聊天、Bot 角色、记忆、任务委托和交付。
 - 通过本机 Codex 或 Claude Code 执行授权任务。
 - 提供 macOS 双击启动入口，首次运行采用手动审批。
 - 不依赖 D-Chat，不接入 Reason Network。
@@ -48,7 +46,7 @@ bash ./启动jarvis.command
 
 在界面设置中填写你自己的模型 API Key，并选择该账号可用的模型。密钥不需要提交到 GitHub，也不要在 Issue 中粘贴。Codex 登录不等于已开通其他模型的 API。
 
-操作步骤和权限边界见[本地使用说明](本地使用说明.md)。上游的完整安装说明见 [UPSTREAM.md](UPSTREAM.md)，系统结构见[架构文档](docs/architecture.md)。
+操作步骤和权限边界见[本地使用说明](本地使用说明.md)，系统结构见[架构文档](docs/architecture.md)。
 
 ## 数据与权限
 
@@ -67,7 +65,3 @@ npm run build
 ```
 
 这些检查不代替真实模型、Codex 任务和跨员工协作的联调验收。
-
-## 许可证
-
-[MIT License](LICENSE)。上游版权信息保留在许可证中，第三方依赖说明见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
