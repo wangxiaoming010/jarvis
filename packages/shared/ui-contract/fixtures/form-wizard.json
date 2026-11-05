@@ -1,0 +1,220 @@
+{
+  "name": "form-wizard",
+  "title": "分步表单与输入焦点",
+  "context": {
+    "threadId": "",
+    "viewId": "form-wizard",
+    "revision": 1
+  },
+  "spec": {
+    "root": "root",
+    "elements": {
+      "root": {
+        "type": "Card",
+        "props": {
+          "title": "分步表单"
+        },
+        "children": ["intro", "wizard", "focusStatus"]
+      },
+      "intro": {
+        "type": "Text",
+        "props": {
+          "text": "本地预览：下一步先校验，返回保留草稿；最后一步仅模拟提交。",
+          "variant": "caption"
+        },
+        "children": []
+      },
+      "wizard": {
+        "type": "Steps",
+        "props": {
+          "value": {
+            "$bindState": "/ui/step"
+          },
+          "labels": ["基本信息", "补充内容", "确认提交"]
+        },
+        "children": ["basic", "details", "confirm"]
+      },
+      "basic": {
+        "type": "Form",
+        "props": {},
+        "children": ["name"]
+      },
+      "name": {
+        "type": "TextField",
+        "props": {
+          "label": "报告名称",
+          "placeholder": "请输入报告名称",
+          "value": {
+            "$bindState": "/form/report/name"
+          },
+          "required": true,
+          "maxLength": 40
+        },
+        "children": [],
+        "on": {
+          "focus": {
+            "action": "setState",
+            "params": {
+              "statePath": "/ui/lastEvent",
+              "value": "报告名称 focus"
+            }
+          },
+          "blur": {
+            "action": "setState",
+            "params": {
+              "statePath": "/ui/lastEvent",
+              "value": "报告名称 blur"
+            }
+          }
+        }
+      },
+      "details": {
+        "type": "Form",
+        "props": {},
+        "children": ["period", "notes"]
+      },
+      "period": {
+        "type": "Select",
+        "props": {
+          "label": "时间范围",
+          "value": {
+            "$bindState": "/form/report/period"
+          },
+          "required": true,
+          "options": [
+            {
+              "label": "昨日",
+              "value": "yesterday"
+            },
+            {
+              "label": "最近七天",
+              "value": "last7days"
+            }
+          ]
+        },
+        "children": [],
+        "on": {
+          "focus": {
+            "action": "setState",
+            "params": {
+              "statePath": "/ui/lastEvent",
+              "value": "时间范围 focus"
+            }
+          },
+          "blur": {
+            "action": "setState",
+            "params": {
+              "statePath": "/ui/lastEvent",
+              "value": "时间范围 blur"
+            }
+          }
+        }
+      },
+      "notes": {
+        "type": "TextArea",
+        "props": {
+          "label": "补充说明",
+          "placeholder": "描述分析目标或补充要求…",
+          "value": {
+            "$bindState": "/form/report/notes"
+          },
+          "required": true,
+          "maxLength": 200,
+          "rows": 4
+        },
+        "children": [],
+        "on": {
+          "focus": {
+            "action": "setState",
+            "params": {
+              "statePath": "/ui/lastEvent",
+              "value": "补充说明 focus"
+            }
+          },
+          "blur": {
+            "action": "setState",
+            "params": {
+              "statePath": "/ui/lastEvent",
+              "value": "补充说明 blur"
+            }
+          }
+        }
+      },
+      "confirm": {
+        "type": "Stack",
+        "props": {},
+        "children": ["summaryLabel", "summaryName", "summaryNotes", "submit"]
+      },
+      "summaryLabel": {
+        "type": "Text",
+        "props": {
+          "text": "确认以下内容后提交",
+          "variant": "heading"
+        },
+        "children": []
+      },
+      "summaryName": {
+        "type": "Text",
+        "props": {
+          "text": {
+            "$state": "/form/report/name"
+          }
+        },
+        "children": []
+      },
+      "summaryNotes": {
+        "type": "Text",
+        "props": {
+          "text": {
+            "$state": "/form/report/notes"
+          }
+        },
+        "children": []
+      },
+      "submit": {
+        "type": "Button",
+        "props": {
+          "label": "提交表单",
+          "variant": "primary"
+        },
+        "children": [],
+        "on": {
+          "press": {
+            "action": "submitForm",
+            "params": {
+              "actionId": "agent.respond",
+              "formPath": "/form/report",
+              "input": {
+                "$state": "/form/report"
+              }
+            }
+          }
+        }
+      },
+      "focusStatus": {
+        "type": "Text",
+        "props": {
+          "text": {
+            "$state": "/ui/lastEvent"
+          },
+          "variant": "caption"
+        },
+        "children": []
+      }
+    }
+  },
+  "state": {
+    "data": {},
+    "form": {
+      "report": {
+        "name": "",
+        "period": "yesterday",
+        "notes": ""
+      }
+    },
+    "ui": {
+      "step": 0,
+      "lastEvent": "尚未聚焦"
+    }
+  }
+}

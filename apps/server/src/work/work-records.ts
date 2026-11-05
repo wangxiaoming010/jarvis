@@ -1,0 +1,3 @@
+export const goalSelect = `SELECT id,bot_id AS botId,group_id AS groupId,source_message_id AS sourceMessageId,project_id AS projectId,title,criteria,version,state,next_action AS nextAction,next_check_at AS nextCheckAt,deadline,generation,unattended_checks AS unattendedChecks,attention_reason AS attentionReason,owner_wait AS ownerWait,legacy,delivery,verification,result,created_at AS createdAt,updated_at AS updatedAt FROM work_goals`;
+export const artifactSelect =
+  'SELECT id,goal_id AS goalId,task_id AS taskId,producer_run_id AS producerRunId,title,kind,locator,application_path AS applicationPath,version,digest,manifest,state,created_at AS createdAt,updated_at AS updatedAt FROM work_artifacts';

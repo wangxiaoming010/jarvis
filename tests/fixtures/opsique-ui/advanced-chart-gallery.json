@@ -1,0 +1,803 @@
+{
+  "protocolVersion": "opsique-ui/0.1",
+  "context": {
+    "threadId": "advanced-chart-preview",
+    "viewId": "advanced-chart-gallery",
+    "revision": 1
+  },
+  "spec": {
+    "root": "root",
+    "elements": {
+      "gauge": {
+        "type": "GaugeChart",
+        "props": {
+          "value": 72,
+          "label": "运行健康度"
+        },
+        "children": []
+      },
+      "gauge-card": {
+        "type": "Card",
+        "props": {
+          "title": "GaugeChart"
+        },
+        "children": ["gauge"]
+      },
+      "radar": {
+        "type": "RadarChart",
+        "props": {
+          "max": 100,
+          "data": [
+            {
+              "label": "质量",
+              "value": 80,
+              "series": "当前"
+            },
+            {
+              "label": "速度",
+              "value": 60,
+              "series": "当前"
+            },
+            {
+              "label": "稳定",
+              "value": 90,
+              "series": "当前"
+            },
+            {
+              "label": "成本",
+              "value": 70,
+              "series": "当前"
+            },
+            {
+              "label": "体验",
+              "value": 85,
+              "series": "当前"
+            },
+            {
+              "label": "质量",
+              "value": 90,
+              "series": "目标"
+            },
+            {
+              "label": "速度",
+              "value": 85,
+              "series": "目标"
+            },
+            {
+              "label": "稳定",
+              "value": 95,
+              "series": "目标"
+            },
+            {
+              "label": "成本",
+              "value": 80,
+              "series": "目标"
+            },
+            {
+              "label": "体验",
+              "value": 90,
+              "series": "目标"
+            }
+          ]
+        },
+        "children": []
+      },
+      "radar-card": {
+        "type": "Card",
+        "props": {
+          "title": "RadarChart"
+        },
+        "children": ["radar"]
+      },
+      "funnel": {
+        "type": "FunnelChart",
+        "props": {
+          "data": [
+            {
+              "label": "访问",
+              "value": 1200
+            },
+            {
+              "label": "注册",
+              "value": 800
+            },
+            {
+              "label": "激活",
+              "value": 450
+            },
+            {
+              "label": "付费",
+              "value": 180
+            }
+          ]
+        },
+        "children": []
+      },
+      "funnel-card": {
+        "type": "Card",
+        "props": {
+          "title": "FunnelChart"
+        },
+        "children": ["funnel"]
+      },
+      "candles": {
+        "type": "CandlestickChart",
+        "props": {
+          "data": [
+            {
+              "x": "1",
+              "open": 20,
+              "high": 25,
+              "low": 18,
+              "close": 23
+            },
+            {
+              "x": "2",
+              "open": 23,
+              "high": 26,
+              "low": 19,
+              "close": 21
+            },
+            {
+              "x": "3",
+              "open": 21,
+              "high": 28,
+              "low": 20,
+              "close": 26
+            },
+            {
+              "x": "4",
+              "open": 26,
+              "high": 30,
+              "low": 24,
+              "close": 29
+            }
+          ]
+        },
+        "children": []
+      },
+      "candles-card": {
+        "type": "Card",
+        "props": {
+          "title": "CandlestickChart"
+        },
+        "children": ["candles"]
+      },
+      "scatter": {
+        "type": "NumericScatterChart",
+        "props": {
+          "data": [
+            {
+              "x": 1,
+              "y": 4,
+              "series": "A",
+              "size": 100,
+              "label": "A"
+            },
+            {
+              "x": 2,
+              "y": 7,
+              "series": "A",
+              "size": 200,
+              "label": "B"
+            },
+            {
+              "x": 4,
+              "y": 6,
+              "series": "A",
+              "size": 300,
+              "label": "C"
+            },
+            {
+              "x": 1.5,
+              "y": 2,
+              "series": "B",
+              "size": 400,
+              "label": "D"
+            },
+            {
+              "x": 3,
+              "y": 5,
+              "series": "B",
+              "size": 500,
+              "label": "E"
+            },
+            {
+              "x": 5,
+              "y": 9,
+              "series": "B",
+              "size": 600,
+              "label": "F"
+            }
+          ]
+        },
+        "children": []
+      },
+      "scatter-card": {
+        "type": "Card",
+        "props": {
+          "title": "NumericScatterChart"
+        },
+        "children": ["scatter"]
+      },
+      "heatmap": {
+        "type": "Heatmap",
+        "props": {
+          "data": [
+            {
+              "x": "周一",
+              "y": "上午",
+              "value": 2
+            },
+            {
+              "x": "周一",
+              "y": "下午",
+              "value": 3
+            },
+            {
+              "x": "周一",
+              "y": "晚上",
+              "value": 4
+            },
+            {
+              "x": "周二",
+              "y": "上午",
+              "value": 4
+            },
+            {
+              "x": "周二",
+              "y": "下午",
+              "value": 6
+            },
+            {
+              "x": "周二",
+              "y": "晚上",
+              "value": 8
+            },
+            {
+              "x": "周三",
+              "y": "上午",
+              "value": 6
+            },
+            {
+              "x": "周三",
+              "y": "下午",
+              "value": 9
+            },
+            {
+              "x": "周三",
+              "y": "晚上",
+              "value": 12
+            },
+            {
+              "x": "周四",
+              "y": "上午",
+              "value": 8
+            },
+            {
+              "x": "周四",
+              "y": "下午",
+              "value": 12
+            },
+            {
+              "x": "周四",
+              "y": "晚上",
+              "value": 16
+            },
+            {
+              "x": "周五",
+              "y": "上午",
+              "value": 10
+            },
+            {
+              "x": "周五",
+              "y": "下午",
+              "value": 15
+            },
+            {
+              "x": "周五",
+              "y": "晚上",
+              "value": 20
+            }
+          ]
+        },
+        "children": []
+      },
+      "heatmap-card": {
+        "type": "Card",
+        "props": {
+          "title": "Heatmap"
+        },
+        "children": ["heatmap"]
+      },
+      "radial": {
+        "type": "RadialChart",
+        "props": {
+          "max": 100,
+          "data": [
+            {
+              "label": "体验",
+              "value": 90
+            },
+            {
+              "label": "速度",
+              "value": 75
+            },
+            {
+              "label": "质量",
+              "value": 85
+            }
+          ]
+        },
+        "children": []
+      },
+      "radial-card": {
+        "type": "Card",
+        "props": {
+          "title": "RadialChart"
+        },
+        "children": ["radial"]
+      },
+      "root": {
+        "type": "Stack",
+        "props": {
+          "spacing": "relaxed"
+        },
+        "children": [
+          "gauge-card",
+          "radar-card",
+          "funnel-card",
+          "candles-card",
+          "scatter-card",
+          "heatmap-card",
+          "radial-card",
+          "sunburst-card",
+          "sankey-card",
+          "composed-card",
+          "horizontal-card",
+          "ranged-card",
+          "profit-loss",
+          "live-window"
+        ]
+      },
+      "sunburst": {
+        "type": "SunburstChart",
+        "props": {
+          "data": [
+            {
+              "id": "revenue",
+              "label": "收入",
+              "children": [
+                {
+                  "id": "pro",
+                  "label": "专业版",
+                  "value": 60
+                },
+                {
+                  "id": "basic",
+                  "label": "标准版",
+                  "value": 40
+                }
+              ]
+            },
+            {
+              "id": "other",
+              "label": "其他",
+              "value": 25
+            }
+          ]
+        },
+        "children": []
+      },
+      "sunburst-card": {
+        "type": "Card",
+        "props": {
+          "title": "SunburstChart"
+        },
+        "children": ["sunburst"]
+      },
+      "sankey": {
+        "type": "SankeyChart",
+        "props": {
+          "nodes": [
+            {
+              "id": "web",
+              "label": "网站"
+            },
+            {
+              "id": "app",
+              "label": "应用"
+            },
+            {
+              "id": "signup",
+              "label": "注册"
+            },
+            {
+              "id": "paid",
+              "label": "付费"
+            },
+            {
+              "id": "trial",
+              "label": "试用"
+            }
+          ],
+          "links": [
+            {
+              "source": "web",
+              "target": "signup",
+              "value": 80
+            },
+            {
+              "source": "app",
+              "target": "signup",
+              "value": 40
+            },
+            {
+              "source": "signup",
+              "target": "paid",
+              "value": 30
+            },
+            {
+              "source": "signup",
+              "target": "trial",
+              "value": 90
+            }
+          ]
+        },
+        "children": []
+      },
+      "sankey-card": {
+        "type": "Card",
+        "props": {
+          "title": "SankeyChart"
+        },
+        "children": ["sankey"]
+      },
+      "composed": {
+        "type": "ComposedChart",
+        "props": {
+          "title": "收入与转化率",
+          "data": [
+            {
+              "x": "周一",
+              "y": 120,
+              "series": "收入",
+              "mark": "bar",
+              "axis": "left"
+            },
+            {
+              "x": "周二",
+              "y": 180,
+              "series": "收入",
+              "mark": "bar",
+              "axis": "left"
+            },
+            {
+              "x": "周三",
+              "y": 150,
+              "series": "收入",
+              "mark": "bar",
+              "axis": "left"
+            },
+            {
+              "x": "周四",
+              "y": 220,
+              "series": "收入",
+              "mark": "bar",
+              "axis": "left"
+            },
+            {
+              "x": "周一",
+              "y": 0.1,
+              "series": "转化率",
+              "mark": "line",
+              "axis": "right"
+            },
+            {
+              "x": "周二",
+              "y": 0.15,
+              "series": "转化率",
+              "mark": "line",
+              "axis": "right"
+            },
+            {
+              "x": "周三",
+              "y": 0.12,
+              "series": "转化率",
+              "mark": "line",
+              "axis": "right"
+            },
+            {
+              "x": "周四",
+              "y": 0.2,
+              "series": "转化率",
+              "mark": "line",
+              "axis": "right"
+            }
+          ]
+        },
+        "children": []
+      },
+      "composed-card": {
+        "type": "Card",
+        "props": {
+          "title": "ComposedChart"
+        },
+        "children": ["composed"]
+      },
+      "horizontal": {
+        "type": "Chart",
+        "props": {
+          "kind": "bar",
+          "title": "横向堆叠",
+          "layout": "horizontal",
+          "stacked": true,
+          "points": [
+            {
+              "x": "标准",
+              "y": 20,
+              "series": "A"
+            },
+            {
+              "x": "专业",
+              "y": 40,
+              "series": "A"
+            },
+            {
+              "x": "企业",
+              "y": 30,
+              "series": "A"
+            },
+            {
+              "x": "标准",
+              "y": 15,
+              "series": "B"
+            },
+            {
+              "x": "专业",
+              "y": 25,
+              "series": "B"
+            },
+            {
+              "x": "企业",
+              "y": 35,
+              "series": "B"
+            }
+          ]
+        },
+        "children": []
+      },
+      "horizontal-card": {
+        "type": "Card",
+        "props": {
+          "title": "Chart"
+        },
+        "children": ["horizontal"]
+      },
+      "ranged": {
+        "type": "Chart",
+        "props": {
+          "kind": "area",
+          "stacked": true,
+          "title": "范围与摘要",
+          "showSummary": true,
+          "ranges": [
+            {
+              "id": "recent",
+              "label": "最近3天",
+              "count": 3
+            },
+            {
+              "id": "all",
+              "label": "全部",
+              "count": 7
+            }
+          ],
+          "defaultRangeId": "recent",
+          "points": [
+            {
+              "x": "周1",
+              "y": 20,
+              "series": "A"
+            },
+            {
+              "x": "周2",
+              "y": 25,
+              "series": "A"
+            },
+            {
+              "x": "周3",
+              "y": 18,
+              "series": "A"
+            },
+            {
+              "x": "周4",
+              "y": 32,
+              "series": "A"
+            },
+            {
+              "x": "周5",
+              "y": 35,
+              "series": "A"
+            },
+            {
+              "x": "周6",
+              "y": 30,
+              "series": "A"
+            },
+            {
+              "x": "周7",
+              "y": 40,
+              "series": "A"
+            },
+            {
+              "x": "周1",
+              "y": 10,
+              "series": "B"
+            },
+            {
+              "x": "周2",
+              "y": 15,
+              "series": "B"
+            },
+            {
+              "x": "周3",
+              "y": 12,
+              "series": "B"
+            },
+            {
+              "x": "周4",
+              "y": 18,
+              "series": "B"
+            },
+            {
+              "x": "周5",
+              "y": 20,
+              "series": "B"
+            },
+            {
+              "x": "周6",
+              "y": 25,
+              "series": "B"
+            },
+            {
+              "x": "周7",
+              "y": 28,
+              "series": "B"
+            }
+          ]
+        },
+        "children": []
+      },
+      "ranged-card": {
+        "type": "Card",
+        "props": {
+          "title": "Chart"
+        },
+        "children": ["ranged"]
+      },
+      "profit-loss": {
+        "type": "Chart",
+        "props": {
+          "title": "交易盈亏",
+          "kind": "line",
+          "mode": "profit-loss",
+          "baseline": 0,
+          "format": {
+            "style": "currency",
+            "currency": "USD"
+          },
+          "points": [
+            {
+              "x": "Jun 2",
+              "y": -3400
+            },
+            {
+              "x": "Jun 3",
+              "y": -1200
+            },
+            {
+              "x": "Jun 4",
+              "y": 800
+            },
+            {
+              "x": "Jun 5",
+              "y": 2700
+            },
+            {
+              "x": "Jun 6",
+              "y": 1900
+            },
+            {
+              "x": "Jun 7",
+              "y": 4200
+            },
+            {
+              "x": "Jun 8",
+              "y": -600
+            },
+            {
+              "x": "Jun 9",
+              "y": -2100
+            },
+            {
+              "x": "Jun 10",
+              "y": 1300
+            },
+            {
+              "x": "Jun 11",
+              "y": 5100
+            }
+          ]
+        },
+        "children": []
+      },
+      "live-window": {
+        "type": "Chart",
+        "props": {
+          "title": "实时请求率",
+          "kind": "line",
+          "mode": "live",
+          "windowSize": 8,
+          "showSummary": true,
+          "points": [
+            {
+              "x": "10:02",
+              "y": 128
+            },
+            {
+              "x": "10:03",
+              "y": 142
+            },
+            {
+              "x": "10:04",
+              "y": 136
+            },
+            {
+              "x": "10:05",
+              "y": 151
+            },
+            {
+              "x": "10:06",
+              "y": 165
+            },
+            {
+              "x": "10:07",
+              "y": 159
+            },
+            {
+              "x": "10:08",
+              "y": 173
+            },
+            {
+              "x": "10:09",
+              "y": 184
+            },
+            {
+              "x": "10:10",
+              "y": 177
+            },
+            {
+              "x": "10:11",
+              "y": 196
+            },
+            {
+              "x": "10:12",
+              "y": 205
+            },
+            {
+              "x": "10:13",
+              "y": 198
+            }
+          ]
+        },
+        "children": []
+      }
+    }
+  },
+  "state": {
+    "data": {},
+    "form": {},
+    "ui": {}
+  }
+}

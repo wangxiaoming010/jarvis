@@ -1,0 +1,149 @@
+{
+  "protocolVersion": "opsique-ui/0.1",
+  "context": {
+    "threadId": "composition-preview",
+    "viewId": "composition-gallery",
+    "revision": 1
+  },
+  "spec": {
+    "root": "root",
+    "elements": {
+      "details": {
+        "type": "Button",
+        "props": {
+          "label": "查看详情",
+          "variant": "secondary"
+        },
+        "children": [],
+        "on": {
+          "press": {
+            "action": "dispatch",
+            "params": {
+              "actionId": "demo.product",
+              "input": "portable-display"
+            }
+          }
+        }
+      },
+      "product": {
+        "type": "ProductCard",
+        "props": {
+          "name": "便携显示器",
+          "description": "示例商品，无真实购买行为",
+          "price": "¥1,299",
+          "rating": 4.6,
+          "badge": "推荐"
+        },
+        "children": ["details"]
+      },
+      "item-title": {
+        "type": "Heading",
+        "props": {
+          "text": "本地协作",
+          "level": 4
+        },
+        "children": []
+      },
+      "item-description": {
+        "type": "Text",
+        "props": {
+          "text": "已连接 · 可继续对话",
+          "variant": "caption"
+        },
+        "children": []
+      },
+      "item-icon": {
+        "type": "Icon",
+        "props": {
+          "name": "layout-grid"
+        },
+        "children": []
+      },
+      "item": {
+        "type": "ItemCard",
+        "props": {
+          "selected": true
+        },
+        "children": ["item-title", "item-description"],
+        "slots": {
+          "leading": ["item-icon"]
+        }
+      },
+      "items": {
+        "type": "ItemCardGroup",
+        "props": {
+          "title": "协作"
+        },
+        "children": ["item"]
+      },
+      "followup": {
+        "type": "Followup",
+        "props": {
+          "prompts": ["对比其他型号", "根据预算推荐"],
+          "value": {
+            "$bindState": "/ui/followup"
+          }
+        },
+        "children": [],
+        "on": {
+          "press": {
+            "action": "dispatch",
+            "params": {
+              "actionId": "demo.followup",
+              "input": {
+                "$state": "/ui/followup"
+              }
+            }
+          }
+        }
+      },
+      "root": {
+        "type": "Dashboard",
+        "props": {
+          "title": "组合结果（示例）",
+          "layout": "stack"
+        },
+        "children": ["product", "items", "signals", "followup"]
+      },
+      "diagram": {
+        "type": "Diagram",
+        "props": {
+          "chart": "flowchart LR\n A[提交需求] --> B{需要界面?}\n B -->|是| C[生成组件]\n B -->|否| D[文字回复]"
+        },
+        "children": []
+      },
+      "listblock": {
+        "type": "ListBlock",
+        "props": {
+          "items": [
+            {
+              "label": "组件",
+              "value": "原生 SwiftUI",
+              "description": "明确协议与状态绑定"
+            },
+            {
+              "label": "动作",
+              "value": "会话协议"
+            }
+          ]
+        },
+        "children": []
+      },
+      "signals": {
+        "type": "ProductSignals",
+        "props": {
+          "title": "方案信号",
+          "labels": ["概览", "明细"]
+        },
+        "children": ["listblock", "diagram"]
+      }
+    }
+  },
+  "state": {
+    "data": {},
+    "form": {},
+    "ui": {
+      "followup": ""
+    }
+  }
+}

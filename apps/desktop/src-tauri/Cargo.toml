@@ -1,0 +1,19 @@
+[package]
+name = "openbot-desktop"
+version = "1.0.4"
+description = "Human and AI collaboration client"
+authors = ["OpenBot"]
+edition = "2021"
+license = "MIT"
+
+[lib]
+name = "openbot_desktop_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = ["tray-icon"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"

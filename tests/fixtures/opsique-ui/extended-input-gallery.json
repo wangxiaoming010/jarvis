@@ -1,0 +1,171 @@
+{
+  "protocolVersion": "opsique-ui/0.1",
+  "context": {
+    "threadId": "inputs-preview",
+    "viewId": "extended-input-gallery",
+    "revision": 1
+  },
+  "spec": {
+    "root": "root",
+    "elements": {
+      "quantity": {
+        "type": "NumberField",
+        "props": {
+          "label": "数量",
+          "value": {
+            "$bindState": "/form/profile/quantity"
+          },
+          "min": 1,
+          "max": 20,
+          "step": 1
+        },
+        "children": []
+      },
+      "date": {
+        "type": "DatePicker",
+        "props": {
+          "label": "日期",
+          "value": {
+            "$bindState": "/form/profile/date"
+          },
+          "required": true
+        },
+        "children": []
+      },
+      "time": {
+        "type": "TimeField",
+        "props": {
+          "label": "时间",
+          "value": {
+            "$bindState": "/form/profile/time"
+          }
+        },
+        "children": []
+      },
+      "range": {
+        "type": "DateRangePicker",
+        "props": {
+          "label": "日期范围",
+          "value": {
+            "$bindState": "/form/profile/range"
+          },
+          "required": true
+        },
+        "children": []
+      },
+      "delivery": {
+        "type": "CheckboxGroup",
+        "props": {
+          "label": "通知渠道",
+          "value": {
+            "$bindState": "/form/profile/delivery"
+          },
+          "options": [
+            {
+              "label": "邮件",
+              "value": "email"
+            },
+            {
+              "label": "站内消息",
+              "value": "inbox"
+            },
+            {
+              "label": "不可用",
+              "value": "disabled",
+              "disabled": true
+            }
+          ],
+          "required": true
+        },
+        "children": []
+      },
+      "combo": {
+        "type": "ComboBox",
+        "props": {
+          "label": "搜索选择",
+          "value": {
+            "$bindState": "/form/profile/combo"
+          },
+          "options": [
+            {
+              "label": "邮件",
+              "value": "email"
+            },
+            {
+              "label": "站内消息",
+              "value": "inbox"
+            },
+            {
+              "label": "不可用",
+              "value": "disabled",
+              "disabled": true
+            }
+          ],
+          "multiple": true
+        },
+        "children": []
+      },
+      "mode": {
+        "type": "ToggleGroup",
+        "props": {
+          "label": "展示模式",
+          "value": {
+            "$bindState": "/form/profile/mode"
+          },
+          "options": [
+            {
+              "label": "简洁",
+              "value": "brief"
+            },
+            {
+              "label": "详细",
+              "value": "detail"
+            }
+          ]
+        },
+        "children": []
+      },
+      "submit": {
+        "type": "Button",
+        "props": {
+          "label": "提交设置"
+        },
+        "children": [],
+        "on": {
+          "press": {
+            "action": "submitForm",
+            "params": {
+              "actionId": "demo.inputs",
+              "formPath": "/form/profile",
+              "input": {
+                "$state": "/form/profile"
+              }
+            }
+          }
+        }
+      },
+      "root": {
+        "type": "Card",
+        "props": {
+          "title": "原生表单输入"
+        },
+        "children": ["quantity", "date", "time", "range", "delivery", "combo", "mode", "submit"]
+      }
+    }
+  },
+  "state": {
+    "data": {},
+    "form": {
+      "profile": {
+        "quantity": 2,
+        "date": "",
+        "time": "09:00",
+        "range": ["", ""],
+        "delivery": [],
+        "combo": [],
+        "mode": ["brief"]
+      }
+    },
+    "ui": {}
+  }
+}

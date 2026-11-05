@@ -1,0 +1,622 @@
+{
+  "name": "generated-scenes-gallery",
+  "title": "生成式组合场景",
+  "context": {
+    "threadId": "scenes-preview",
+    "viewId": "generated-scenes-gallery",
+    "revision": 1
+  },
+  "spec": {
+    "root": "root",
+    "elements": {
+      "scene-0-action-0": {
+        "type": "Button",
+        "props": {
+          "label": "Discard",
+          "variant": "secondary"
+        },
+        "children": [],
+        "on": {
+          "press": {
+            "action": "dispatch",
+            "params": {
+              "actionId": "demo.scene",
+              "input": "Discard the proposed event"
+            }
+          }
+        }
+      },
+      "scene-0-action-1": {
+        "type": "Button",
+        "props": {
+          "label": "Add to calendar",
+          "variant": "primary"
+        },
+        "children": [],
+        "on": {
+          "press": {
+            "action": "dispatch",
+            "params": {
+              "actionId": "demo.scene",
+              "input": "Add the proposed Q1 roadmap review to my calendar"
+            }
+          }
+        }
+      },
+      "scene-0": {
+        "type": "GeneratedComposition",
+        "props": {
+          "kind": "create-event",
+          "content": {
+            "date": {
+              "day": 28,
+              "weekday": "Friday"
+            },
+            "events": [
+              {
+                "id": "lunch",
+                "time": "12:00 – 12:45 PM",
+                "title": "Lunch",
+                "tone": "danger"
+              },
+              {
+                "id": "roadmap",
+                "status": "proposed",
+                "time": "1:00 – 2:00 PM",
+                "title": "Q1 roadmap review",
+                "tone": "accent"
+              },
+              {
+                "id": "standup",
+                "time": "3:30 – 4:00 PM",
+                "title": "Team standup",
+                "tone": "danger"
+              }
+            ]
+          },
+          "title": "Create event",
+          "description": "A proposed meeting shown alongside the existing schedule."
+        },
+        "children": ["scene-0-action-0", "scene-0-action-1"]
+      },
+      "scene-1": {
+        "type": "GeneratedComposition",
+        "props": {
+          "kind": "view-event",
+          "content": {
+            "date": "Friday, Dec 28",
+            "time": "1:00 – 2:00 PM",
+            "tone": "accent"
+          },
+          "title": "Q1 roadmap review",
+          "description": "Upcoming calendar event."
+        },
+        "children": []
+      },
+      "scene-2-action-0": {
+        "type": "Button",
+        "props": {
+          "label": "View playlist",
+          "variant": "secondary"
+        },
+        "children": [],
+        "on": {
+          "press": {
+            "action": "dispatch",
+            "params": {
+              "actionId": "demo.scene",
+              "input": "Open this playlist"
+            }
+          }
+        }
+      },
+      "scene-2": {
+        "type": "GeneratedComposition",
+        "props": {
+          "kind": "playlist",
+          "content": {
+            "cover": {
+              "alt": "Playlist cover artwork",
+              "src": "https://heroui-assets.nyc3.cdn.digitaloceanspaces.com/docs/heroui-pro/agent-ui/vinyl-records.png"
+            },
+            "tracks": [
+              {
+                "artist": "Erik Mclean",
+                "id": "eyes-closed",
+                "image": {
+                  "alt": "Eyes closed cover",
+                  "src": "https://heroui-assets.nyc3.cdn.digitaloceanspaces.com/heroui-pro-landing/small-album-1.webp"
+                },
+                "title": "Eyes closed"
+              },
+              {
+                "artist": "Efe Kurnaz",
+                "id": "hymn-for-the-weekend",
+                "image": {
+                  "alt": "Hymn for the weekend cover",
+                  "src": "https://heroui-assets.nyc3.cdn.digitaloceanspaces.com/heroui-pro-landing/small-album-2.webp"
+                },
+                "title": "Hymn for the weekend"
+              },
+              {
+                "artist": "Reinhart Julian",
+                "id": "something-like-this",
+                "image": {
+                  "alt": "Something Just Like This cover",
+                  "src": "https://heroui-assets.nyc3.cdn.digitaloceanspaces.com/heroui-pro-landing/small-album-3.webp"
+                },
+                "title": "Something Just Like This"
+              }
+            ]
+          },
+          "title": "Weekend playlist",
+          "description": "Three tracks selected for the current playlist."
+        },
+        "children": ["scene-2-action-0"]
+      },
+      "scene-3": {
+        "type": "GeneratedComposition",
+        "props": {
+          "kind": "flight-tracker",
+          "content": {
+            "airline": {
+              "logo": {
+                "alt": "Hero Air",
+                "src": "https://heroui-assets.nyc3.cdn.digitaloceanspaces.com/docs/heroui_isotipo.png"
+              },
+              "name": "Hero Air"
+            },
+            "date": "Fri, Apr 25",
+            "destination": {
+              "label": "San Francisco",
+              "status": "On time",
+              "time": "7:40 AM +1"
+            },
+            "flightNumber": "AA 900",
+            "origin": {
+              "label": "Buenos Aires",
+              "status": "On time",
+              "time": "9:05 PM"
+            },
+            "progress": 30
+          },
+          "title": "AA 900",
+          "description": "Current flight progress and timing."
+        },
+        "children": []
+      },
+      "scene-4": {
+        "type": "GeneratedComposition",
+        "props": {
+          "kind": "ride-status",
+          "content": {
+            "driver": {
+              "image": {
+                "alt": "Kate Wilson",
+                "src": "https://heroui-assets.nyc3.cdn.digitaloceanspaces.com/avatars/green.jpg"
+              },
+              "name": "Kate Wilson"
+            },
+            "eta": "1 min",
+            "pickup": "455 Valencia St"
+          },
+          "title": "Your ride is arriving",
+          "description": "Driver arrival and pickup location."
+        },
+        "children": []
+      },
+      "scene-5-action-0": {
+        "type": "Button",
+        "props": {
+          "label": "View details",
+          "variant": "primary"
+        },
+        "children": [],
+        "on": {
+          "press": {
+            "action": "dispatch",
+            "params": {
+              "actionId": "demo.scene",
+              "input": "Show my purchase details"
+            }
+          }
+        }
+      },
+      "scene-5": {
+        "type": "GeneratedComposition",
+        "props": {
+          "kind": "purchase-complete",
+          "content": {
+            "details": [
+              {
+                "label": "Estimated delivery",
+                "value": "Thursday, Oct 8"
+              },
+              {
+                "label": "Sold by",
+                "value": "HeroUI Pro Store"
+              }
+            ],
+            "paid": {
+              "amount": 1350,
+              "currency": "USD"
+            },
+            "product": {
+              "description": "Free delivery · 14-day returns",
+              "image": {
+                "alt": "Black knitted sneakers",
+                "src": "https://heroui-assets.nyc3.cdn.digitaloceanspaces.com/heroui-pro-landing/sneakers.webp"
+              },
+              "name": "Knitted sneakers"
+            }
+          },
+          "title": "Purchase complete",
+          "description": "Your payment was successful."
+        },
+        "children": ["scene-5-action-0"]
+      },
+      "scene-6-action-0": {
+        "type": "Button",
+        "props": {
+          "label": "Add to cart",
+          "variant": "secondary"
+        },
+        "children": [],
+        "on": {
+          "press": {
+            "action": "dispatch",
+            "params": {
+              "actionId": "demo.scene",
+              "input": "Add these items to my cart"
+            }
+          }
+        }
+      },
+      "scene-6-action-1": {
+        "type": "Button",
+        "props": {
+          "label": "Purchase",
+          "variant": "primary"
+        },
+        "children": [],
+        "on": {
+          "press": {
+            "action": "dispatch",
+            "params": {
+              "actionId": "demo.scene",
+              "input": "Purchase these items"
+            }
+          }
+        }
+      },
+      "scene-6": {
+        "type": "GeneratedComposition",
+        "props": {
+          "kind": "purchase-items",
+          "content": {
+            "currency": "USD",
+            "items": [
+              {
+                "description": "Toasted · Hot",
+                "id": "wrap",
+                "image": {
+                  "alt": "Egg & bacon wrap",
+                  "src": "https://heroui-assets.nyc3.cdn.digitaloceanspaces.com/images/egg.webp"
+                },
+                "name": "Egg & bacon wrap",
+                "price": 7.25
+              },
+              {
+                "description": "Granola · Seasonal",
+                "id": "yogurt",
+                "image": {
+                  "alt": "Cherry yogurt bowl",
+                  "src": "https://heroui-assets.nyc3.cdn.digitaloceanspaces.com/docs/cherries.jpeg"
+                },
+                "name": "Cherry yogurt bowl",
+                "price": 5.9
+              },
+              {
+                "description": "16oz iced · Mint",
+                "id": "tonic",
+                "image": {
+                  "alt": "Citrus tonic",
+                  "src": "https://heroui-assets.nyc3.cdn.digitaloceanspaces.com/docs/oranges.jpeg"
+                },
+                "name": "Citrus tonic",
+                "price": 4.85
+              }
+            ],
+            "totals": [
+              {
+                "amount": 18,
+                "label": "Subtotal"
+              },
+              {
+                "amount": 1.58,
+                "label": "Sales tax (8.75%)"
+              },
+              {
+                "amount": 19.58,
+                "emphasis": true,
+                "label": "Total with tax"
+              }
+            ]
+          },
+          "title": "Purchase items",
+          "description": "Review the items and final total."
+        },
+        "children": ["scene-6-action-0", "scene-6-action-1"]
+      },
+      "scene-7": {
+        "type": "GeneratedComposition",
+        "props": {
+          "kind": "player-card",
+          "content": {
+            "backgroundImage": {
+              "alt": "Foxy on the pitch",
+              "src": "https://heroui-assets.nyc3.cdn.digitaloceanspaces.com/docs/heroui-pro/agent-ui/fox-player.png"
+            },
+            "jerseyNumber": "9",
+            "playerName": "Foxy",
+            "stats": [
+              {
+                "label": "GLS",
+                "value": 18
+              },
+              {
+                "label": "AST",
+                "value": 11
+              },
+              {
+                "label": "TKL",
+                "value": 26
+              },
+              {
+                "label": "NUTMEGS",
+                "value": 17
+              }
+            ]
+          },
+          "title": "Foxy player card",
+          "description": "Match statistics for the selected player."
+        },
+        "children": []
+      },
+      "scene-8-action-0": {
+        "type": "Button",
+        "props": {
+          "label": "Yes",
+          "variant": "primary"
+        },
+        "children": [],
+        "on": {
+          "press": {
+            "action": "dispatch",
+            "params": {
+              "actionId": "demo.scene",
+              "input": "Enable this notification"
+            }
+          }
+        }
+      },
+      "scene-8-action-1": {
+        "type": "Button",
+        "props": {
+          "label": "No",
+          "variant": "secondary"
+        },
+        "children": [],
+        "on": {
+          "press": {
+            "action": "dispatch",
+            "params": {
+              "actionId": "demo.scene",
+              "input": "Do not enable this notification"
+            }
+          }
+        }
+      },
+      "scene-8": {
+        "type": "GeneratedComposition",
+        "props": {
+          "kind": "enable-notification",
+          "content": {},
+          "title": "Enable notification",
+          "description": "Notify me when this item ships"
+        },
+        "children": ["scene-8-action-0", "scene-8-action-1"]
+      },
+      "scene-9": {
+        "type": "GeneratedComposition",
+        "props": {
+          "kind": "weather-forecast",
+          "content": {
+            "condition": "partly-cloudy",
+            "forecast": [
+              {
+                "condition": "clear",
+                "label": "Mon",
+                "temperature": 17
+              },
+              {
+                "condition": "rain",
+                "label": "Tue",
+                "temperature": 14
+              },
+              {
+                "condition": "partly-cloudy",
+                "label": "Wed",
+                "temperature": 16
+              },
+              {
+                "condition": "windy",
+                "label": "Thu",
+                "temperature": 13
+              },
+              {
+                "condition": "clear",
+                "label": "Fri",
+                "temperature": 18
+              }
+            ],
+            "high": 20,
+            "location": "Buenos Aires, AR",
+            "low": 11,
+            "unit": "celsius"
+          },
+          "title": "Five-day forecast",
+          "description": "Sun early, scattered showers and a breeze after lunch"
+        },
+        "children": []
+      },
+      "scene-10": {
+        "type": "GeneratedComposition",
+        "props": {
+          "kind": "weather-current",
+          "content": {
+            "condition": "clear",
+            "details": [
+              {
+                "label": "Feels like",
+                "value": "19°C"
+              },
+              {
+                "label": "Humidity",
+                "value": "62%"
+              }
+            ],
+            "location": "Buenos Aires",
+            "temperature": 20,
+            "unit": "celsius"
+          },
+          "title": "Current weather",
+          "description": "Clear skies with a mild breeze off the river into the evening."
+        },
+        "children": []
+      },
+      "scene-11": {
+        "type": "GeneratedComposition",
+        "props": {
+          "kind": "channel-message",
+          "content": {
+            "attachments": [
+              {
+                "id": "preview",
+                "image": {
+                  "alt": "widget-preview.png",
+                  "src": "https://heroui-assets.nyc3.cdn.digitaloceanspaces.com/docs/neo1.jpeg"
+                },
+                "name": "widget-preview.png"
+              },
+              {
+                "id": "spec",
+                "name": "agent-ui-spec.pdf"
+              },
+              {
+                "id": "roadmap",
+                "name": "q3-roadmap.md"
+              }
+            ],
+            "author": {
+              "image": {
+                "alt": "John Doe",
+                "src": "https://heroui-assets.nyc3.cdn.digitaloceanspaces.com/avatars/blue.jpg"
+              },
+              "name": "John Doe"
+            },
+            "channel": "#proj-agent-ui",
+            "content": "End of week update for Agent UI:\n\n1. Designed new widget primitives with more flexibility.\n2. Made progress on streaming-ready examples.\n3. Prioritized remaining component requests.",
+            "timestamp": "5:12 PM"
+          },
+          "title": "Project update",
+          "description": "A project update with attachments."
+        },
+        "children": []
+      },
+      "scene-12-action-0": {
+        "type": "Button",
+        "props": {
+          "label": "View",
+          "variant": "primary"
+        },
+        "children": [],
+        "on": {
+          "press": {
+            "action": "dispatch",
+            "params": {
+              "actionId": "demo.scene",
+              "input": "Show this session"
+            }
+          }
+        }
+      },
+      "scene-12": {
+        "type": "GeneratedComposition",
+        "props": {
+          "kind": "event-session",
+          "content": {
+            "eyebrow": "Breakout session",
+            "location": "Cowell Theater",
+            "speakers": [
+              {
+                "image": {
+                  "alt": "Emily Chen",
+                  "src": "https://heroui-assets.nyc3.cdn.digitaloceanspaces.com/avatars/purple.jpg"
+                },
+                "name": "Emily Chen",
+                "role": "Design Engineer"
+              },
+              {
+                "image": {
+                  "alt": "Michael Brown",
+                  "src": "https://heroui-assets.nyc3.cdn.digitaloceanspaces.com/avatars/orange.jpg"
+                },
+                "name": "Michael Brown",
+                "role": "Member of Technical Staff"
+              },
+              {
+                "image": {
+                  "alt": "Olivia Davis",
+                  "src": "https://heroui-assets.nyc3.cdn.digitaloceanspaces.com/avatars/red.jpg"
+                },
+                "name": "Olivia Davis",
+                "role": "Developer Experience"
+              }
+            ],
+            "time": "11:15 AM"
+          },
+          "title": "Orchestrating Agents at Scale",
+          "description": "Design and deploy enterprise-grade agents with a composable UI system."
+        },
+        "children": ["scene-12-action-0"]
+      },
+      "root": {
+        "type": "Stack",
+        "props": {
+          "spacing": "relaxed"
+        },
+        "children": [
+          "scene-0",
+          "scene-1",
+          "scene-2",
+          "scene-3",
+          "scene-4",
+          "scene-5",
+          "scene-6",
+          "scene-7",
+          "scene-8",
+          "scene-9",
+          "scene-10",
+          "scene-11",
+          "scene-12"
+        ]
+      }
+    }
+  },
+  "state": {
+    "data": {},
+    "form": {},
+    "ui": {}
+  }
+}

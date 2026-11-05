@@ -1,0 +1,168 @@
+{
+  "name": "calc-roi",
+  "title": "公式计算 · ROI",
+  "context": {
+    "threadId": "gallery",
+    "viewId": "calc-roi",
+    "revision": 1
+  },
+  "spec": {
+    "root": "card",
+    "elements": {
+      "card": {
+        "type": "Card",
+        "props": {
+          "title": "投放 ROI 测算"
+        },
+        "children": ["inputs", "metrics", "warning", "chart"]
+      },
+      "inputs": {
+        "type": "Grid",
+        "props": {},
+        "children": ["budget", "cpc", "cvr", "aov"]
+      },
+      "budget": {
+        "type": "Slider",
+        "props": {
+          "label": "投放预算",
+          "value": {
+            "$bindState": "/form/ad/budget"
+          },
+          "min": 10000,
+          "max": 200000,
+          "step": 5000,
+          "unit": "元"
+        },
+        "children": []
+      },
+      "cpc": {
+        "type": "Slider",
+        "props": {
+          "label": "单次点击成本",
+          "value": {
+            "$bindState": "/form/ad/cpc"
+          },
+          "min": 0.2,
+          "max": 5,
+          "step": 0.1,
+          "unit": "元"
+        },
+        "children": []
+      },
+      "cvr": {
+        "type": "Slider",
+        "props": {
+          "label": "转化率",
+          "value": {
+            "$bindState": "/form/ad/cvr"
+          },
+          "min": 0.5,
+          "max": 10,
+          "step": 0.1,
+          "unit": "%"
+        },
+        "children": []
+      },
+      "aov": {
+        "type": "Slider",
+        "props": {
+          "label": "客单价",
+          "value": {
+            "$bindState": "/form/ad/aov"
+          },
+          "min": 50,
+          "max": 500,
+          "step": 10,
+          "unit": "元"
+        },
+        "children": []
+      },
+      "metrics": {
+        "type": "Grid",
+        "props": {},
+        "children": ["orders", "gmv", "ratio"]
+      },
+      "orders": {
+        "type": "Metric",
+        "props": {
+          "label": "预计订单",
+          "value": {
+            "$state": "/computed/ordersText"
+          }
+        },
+        "children": []
+      },
+      "gmv": {
+        "type": "Metric",
+        "props": {
+          "label": "预计 GMV",
+          "value": {
+            "$state": "/computed/gmvText"
+          }
+        },
+        "children": []
+      },
+      "ratio": {
+        "type": "Metric",
+        "props": {
+          "label": "ROI",
+          "value": {
+            "$state": "/computed/roiText"
+          }
+        },
+        "children": []
+      },
+      "warning": {
+        "type": "Callout",
+        "props": {
+          "tone": "warning",
+          "title": "投放会亏损",
+          "content": "按当前参数，GMV 低于投放预算。可以降低点击成本、提高转化率或客单价。"
+        },
+        "children": [],
+        "visible": {
+          "$state": "/computed/losing",
+          "eq": true
+        }
+      },
+      "chart": {
+        "type": "Chart",
+        "props": {
+          "kind": "bar",
+          "title": "不同预算下的 GMV（万元）",
+          "points": {
+            "$state": "/computed/curve"
+          }
+        },
+        "children": []
+      }
+    }
+  },
+  "state": {
+    "data": {},
+    "form": {
+      "ad": {
+        "budget": 50000,
+        "cpc": 1.5,
+        "cvr": 2.5,
+        "aov": 180
+      }
+    },
+    "ui": {},
+    "computed": {
+      "clicks": "form.ad.budget / form.ad.cpc",
+      "orders": "clicks * form.ad.cvr / 100",
+      "gmv": "orders * form.ad.aov",
+      "roi": "gmv / form.ad.budget",
+      "ordersText": "number(orders)",
+      "gmvText": "currency(gmv, 0)",
+      "roiText": "fixed(roi, 2)",
+      "losing": "roi < 1",
+      "curve": {
+        "range": [20000, 200000, 30000],
+        "x": "number(t / 10000) + '万'",
+        "y": "round(t / form.ad.cpc * form.ad.cvr / 100 * form.ad.aov / 10000, 1)"
+      }
+    }
+  }
+}

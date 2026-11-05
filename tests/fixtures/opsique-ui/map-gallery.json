@@ -1,0 +1,75 @@
+{
+  "protocolVersion": "opsique-ui/0.1",
+  "context": {
+    "threadId": "map-preview",
+    "viewId": "map-gallery",
+    "revision": 1
+  },
+  "spec": {
+    "root": "root",
+    "elements": {
+      "root": {
+        "type": "Card",
+        "props": {
+          "title": "地图与路线"
+        },
+        "children": ["map"]
+      },
+      "map": {
+        "type": "Map",
+        "props": {
+          "title": "杭州漫步（示例）",
+          "initialLocationId": "lake",
+          "locations": [
+            {
+              "id": "lake",
+              "title": "西湖",
+              "latitude": 30.243,
+              "longitude": 120.15,
+              "address": "杭州西湖",
+              "description": "示例行程地点",
+              "category": "湖泊与步行路线",
+              "rating": 4.8,
+              "reviewCount": 436,
+              "website": "https://www.hangzhou.gov.cn/"
+            },
+            {
+              "id": "park",
+              "title": "湖滨公园",
+              "latitude": 30.252,
+              "longitude": 120.155
+            }
+          ],
+          "routes": [
+            [
+              {
+                "latitude": 30.243,
+                "longitude": 120.15
+              },
+              {
+                "latitude": 30.247,
+                "longitude": 120.154
+              },
+              {
+                "latitude": 30.252,
+                "longitude": 120.155
+              }
+            ],
+            {
+              "id": "lake-walk",
+              "label": "湖滨步行",
+              "mode": "walking",
+              "stopIds": ["lake", "park"]
+            }
+          ]
+        },
+        "children": []
+      }
+    }
+  },
+  "state": {
+    "data": {},
+    "form": {},
+    "ui": {}
+  }
+}

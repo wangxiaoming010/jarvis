@@ -1,0 +1,88 @@
+/* OpenBot host tokens for the vendored Opsique renderer. */
+.renderer,
+.render-overlay {
+  --ink: #262626;
+  --muted: #737373;
+  --surface: #ffffff;
+  --canvas: #f5f5f5;
+  --line: #e5e5e5;
+  --render-neutral: #ededed;
+  --render-danger: #b74c4c;
+  --render-success: #23845b;
+  --render-warning: #a77529;
+  --brand: #262626;
+  --brand-dark: #171717;
+  --brand-soft: #f0f0f0;
+  --accent: #171717;
+  --accent-foreground: #ffffff;
+  --foreground: var(--ink);
+  --surface-foreground: var(--ink);
+  --field-background: var(--canvas);
+  --render-field-radius: 9px;
+  --render-surface-radius: 12px;
+  --render-shadow: 0 1px 3px #0000000a, 0 0 0 1px #0000000c;
+  --motion-feedback: 200ms;
+  --motion-press: 300ms;
+  --motion-highlight: 200ms;
+  --motion-chart: 650ms;
+  --motion-errorIn: 150ms;
+  --motion-errorOut: 100ms;
+  --motion-step: 350ms;
+  --motion-press-curve: cubic-bezier(0, 0, 0.58, 1);
+  --motion-indicator: 350ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  min-width: 0;
+  max-width: 100%;
+}
+.renderer .row {
+  display: flex;
+  align-items: center;
+}
+.renderer .row.wrap {
+  flex-wrap: wrap;
+}
+.renderer .row.spread {
+  justify-content: space-between;
+}
+.renderer .stack {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.renderer .grow {
+  flex: 1;
+  min-width: 0;
+}
+.renderer .w-full {
+  width: 100%;
+}
+.renderer .muted,
+.render-overlay .muted {
+  color: var(--muted);
+}
+.renderer :is(input, textarea, select, button) {
+  max-width: 100%;
+}
+.renderer .callout {
+  overflow-wrap: anywhere;
+}
+.renderer .render-card {
+  border: 1px solid var(--line);
+  box-shadow: none;
+}
+.renderer .render-card.nested {
+  border: 0;
+}
+.dynamic-message {
+  width: 100%;
+  min-width: 0;
+  margin-top: 10px;
+}
+.dynamic-message > .dynamic-note {
+  margin: 8px 0 0;
+  color: #737373;
+  font-size: 11px;
+}
+.system-card-message {
+  margin: 12px 0 24px 43px;
+  min-width: 0;
+}

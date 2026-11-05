@@ -1,0 +1,391 @@
+{
+  "version": 1,
+  "description": "Formula (state.computed) cases every implementation must pass: compile with the case state, evaluate, compare. 'close' values match within 1e-9; 'invalid' cases must be rejected at compile time (messages are implementation-specific).",
+  "states": {
+    "base": {
+      "data": {
+        "price": 120
+      },
+      "form": {
+        "loan": {
+          "principal": 1000000,
+          "rate": 3.5,
+          "years": 30
+        },
+        "qty": 3
+      },
+      "ui": {
+        "tax": true
+      }
+    },
+    "typed": {
+      "data": {
+        "list": [3, "7"],
+        "none": []
+      },
+      "ui": {},
+      "form": {
+        "amount": "1,200",
+        "zip": "00123",
+        "extras": ["gps", "insurance"],
+        "year": "2024",
+        "n": "3.5",
+        "empty": ""
+      }
+    }
+  },
+  "cases": [
+    {
+      "name": "arithmetic precedence and associativity",
+      "computed": {
+        "a": "1 + 2 * 3",
+        "b": "(1 + 2) * 3",
+        "c": "-2 ^ 2",
+        "d": "2 ^ 3 ^ 2",
+        "e": "2 ^ -1",
+        "f": "10 % 4",
+        "g": "7 / 2"
+      },
+      "expect": {
+        "a": 7,
+        "b": 9,
+        "c": -4,
+        "d": 512,
+        "e": 0.5,
+        "f": 2,
+        "g": 3.5
+      }
+    },
+    {
+      "name": "state, other values and booleans",
+      "computed": {
+        "total": "data.price * form.qty",
+        "withTax": "if(ui.tax, total * 1.06, total)",
+        "big": "withTax > 300 && form.qty >= 3",
+        "same": "ui.tax == 1"
+      },
+      "expect": {
+        "total": 360,
+        "big": true,
+        "same": false
+      },
+      "close": {
+        "withTax": 381.6
+      }
+    },
+    {
+      "name": "functions, rounding and choices",
+      "computed": {
+        "a": "round(2.345, 2)",
+        "b": "clamp(15, 0, 10)",
+        "c": "max(1, 9, 4)",
+        "d": "avg(2, 4, 6)",
+        "e": "round(pmt(0.035 / 12, 360, 1000000), 2)",
+        "f": "pmt(0, 10, 1000)",
+        "g": "round(2.5)",
+        "h": "round(-2.5)",
+        "i": "form.qty > 2 ? 'many' : form.qty > 0 ? 'few' : 'none'",
+        "j": "(1 < 0 ? 1 : 2) * 3"
+      },
+      "expect": {
+        "a": 2.35,
+        "b": 10,
+        "c": 9,
+        "d": 4,
+        "e": 4490.45,
+        "f": 100,
+        "g": 3,
+        "h": -2,
+        "i": "many",
+        "j": 6
+      }
+    },
+    {
+      "name": "locale-independent formatting and text",
+      "computed": {
+        "a": "currency(1234567.891)",
+        "b": "currency(-1234.5, 0, '$')",
+        "c": "percent(0.12345)",
+        "d": "number(9876543)",
+        "e": "fixed(3.14159, 3)",
+        "f": "'月供 ' + currency(4490.45)",
+        "g": "'第' + 3 + '年'",
+        "h": "'' + 1.5",
+        "i": "fixed(-2.5, 0)",
+        "j": "fixed(1.005, 2)",
+        "k": "currency(-0.001)"
+      },
+      "expect": {
+        "a": "¥1,234,567.89",
+        "b": "-$1,235",
+        "c": "12.3%",
+        "d": "9,876,543",
+        "e": "3.142",
+        "f": "月供 ¥4,490.45",
+        "g": "第3年",
+        "h": "1.5",
+        "i": "-3",
+        "j": "1.00",
+        "k": "¥0.00"
+      }
+    },
+    {
+      "name": "chart series",
+      "computed": {
+        "growth": {
+          "range": [0, 3],
+          "y": "round(1000 * 1.1 ^ t, 2)"
+        },
+        "split": {
+          "range": [1, "form.loan.years", 10],
+          "x": "'第' + t + '年'",
+          "series": {
+            "本金": "t * 10",
+            "利息": "t * 2"
+          }
+        },
+        "log": {
+          "range": [0, 2],
+          "y": "ln(t)"
+        }
+      },
+      "expect": {
+        "growth": [
+          {
+            "x": "0",
+            "y": 1000
+          },
+          {
+            "x": "1",
+            "y": 1100
+          },
+          {
+            "x": "2",
+            "y": 1210
+          },
+          {
+            "x": "3",
+            "y": 1331
+          }
+        ],
+        "split": [
+          {
+            "x": "第1年",
+            "y": 10,
+            "series": "本金"
+          },
+          {
+            "x": "第1年",
+            "y": 2,
+            "series": "利息"
+          },
+          {
+            "x": "第11年",
+            "y": 110,
+            "series": "本金"
+          },
+          {
+            "x": "第11年",
+            "y": 22,
+            "series": "利息"
+          },
+          {
+            "x": "第21年",
+            "y": 210,
+            "series": "本金"
+          },
+          {
+            "x": "第21年",
+            "y": 42,
+            "series": "利息"
+          }
+        ],
+        "log": [
+          {
+            "x": "1",
+            "y": 0
+          },
+          {
+            "x": "2",
+            "y": 0.6931471805599453
+          }
+        ]
+      }
+    },
+    {
+      "name": "runtime failures become null",
+      "computed": {
+        "a": "1 / (form.qty - 3)",
+        "b": "sqrt(-1)",
+        "c": "a + 1",
+        "d": "(-8) ^ 0.5",
+        "e": "10 ^ 400"
+      },
+      "expect": {
+        "a": null,
+        "b": null,
+        "c": null,
+        "d": null,
+        "e": null
+      }
+    },
+    {
+      "name": "nesting depth counts brackets, not precedence",
+      "computed": {
+        "a": "round(round(round(round(round(round(round(round(round(round(round(round((1 + 2) * 3 ^ 2))))))))))))"
+      },
+      "expect": {
+        "a": 27
+      }
+    },
+    {
+      "name": "numbers typed as text and list values",
+      "state": "typed",
+      "computed": {
+        "a": "form.amount * 2",
+        "b": "form.amount + 1",
+        "c": "'邮编 ' + form.zip",
+        "d": "count(form.extras)",
+        "e": "has(form.extras, 'gps') ? 30 : 0",
+        "f": "form.year == 2024",
+        "g": "form.year == '2024'",
+        "h": "sum(form.extras)",
+        "i": "max(1, data.list)",
+        "j": "avg(data.none)",
+        "k": "form.empty * 2",
+        "l": "count(form.amount)",
+        "m": "form.n / 7",
+        "o": "has(data.list, 7)",
+        "p": "true == 1"
+      },
+      "expect": {
+        "a": 2400,
+        "b": 1201,
+        "c": "邮编 00123",
+        "d": 2,
+        "e": 30,
+        "f": true,
+        "g": true,
+        "h": null,
+        "i": 7,
+        "j": null,
+        "k": null,
+        "l": null,
+        "m": 0.5,
+        "o": true,
+        "p": false
+      }
+    }
+  ],
+  "invalid": [
+    {
+      "name": "incomplete",
+      "computed": {
+        "a": "1 +"
+      }
+    },
+    {
+      "name": "unknown function",
+      "computed": {
+        "a": "alert(1)"
+      }
+    },
+    {
+      "name": "uninitialized state",
+      "computed": {
+        "a": "form.missing * 2"
+      }
+    },
+    {
+      "name": "cycle",
+      "computed": {
+        "a": "b + 1",
+        "b": "a + 1"
+      }
+    },
+    {
+      "name": "unknown name",
+      "computed": {
+        "a": "nope"
+      }
+    },
+    {
+      "name": "t outside a series",
+      "computed": {
+        "a": "t * 2"
+      }
+    },
+    {
+      "name": "formula reads a series",
+      "computed": {
+        "s": {
+          "range": [0, 3],
+          "y": "t"
+        },
+        "a": "s + 1"
+      }
+    },
+    {
+      "name": "too long",
+      "computed": {
+        "a": "1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1"
+      }
+    },
+    {
+      "name": "reserved name",
+      "computed": {
+        "form": "1"
+      }
+    },
+    {
+      "name": "reserved literal name",
+      "computed": {
+        "true": "1"
+      }
+    },
+    {
+      "name": "bad character",
+      "computed": {
+        "a": "2 $ 3"
+      }
+    },
+    {
+      "name": "code injection",
+      "computed": {
+        "a": "__import__(\"os\")"
+      }
+    },
+    {
+      "name": "range too short",
+      "computed": {
+        "s": {
+          "range": [0],
+          "y": "t"
+        }
+      }
+    },
+    {
+      "name": "series without y",
+      "computed": {
+        "s": {
+          "range": [0, 1]
+        }
+      }
+    },
+    {
+      "name": "unknown series key",
+      "computed": {
+        "s": {
+          "range": [0, 1],
+          "z": "t"
+        }
+      }
+    },
+    {
+      "name": "nested too deeply",
+      "computed": {
+        "a": "((((((((((((((((((((((((((((((((((((((((1))))))))))))))))))))))))))))))))))))))))"
+      }
+    }
+  ]
+}

@@ -1,0 +1,152 @@
+{
+  "name": "calc-loan",
+  "title": "公式计算 · 房贷",
+  "context": {
+    "threadId": "gallery",
+    "viewId": "calc-loan",
+    "revision": 1
+  },
+  "spec": {
+    "root": "card",
+    "elements": {
+      "card": {
+        "type": "Card",
+        "props": {
+          "title": "房贷月供测算"
+        },
+        "children": ["inputs", "metrics", "ratio", "chart"]
+      },
+      "inputs": {
+        "type": "Stack",
+        "props": {},
+        "children": ["amount", "rate", "years"]
+      },
+      "amount": {
+        "type": "Slider",
+        "props": {
+          "label": "贷款金额",
+          "value": {
+            "$bindState": "/form/loan/amount"
+          },
+          "min": 10,
+          "max": 500,
+          "step": 10,
+          "unit": "万"
+        },
+        "children": []
+      },
+      "rate": {
+        "type": "Slider",
+        "props": {
+          "label": "年利率",
+          "value": {
+            "$bindState": "/form/loan/rate"
+          },
+          "min": 1,
+          "max": 8,
+          "step": 0.05,
+          "unit": "%"
+        },
+        "children": []
+      },
+      "years": {
+        "type": "Slider",
+        "props": {
+          "label": "贷款年限",
+          "value": {
+            "$bindState": "/form/loan/years"
+          },
+          "min": 5,
+          "max": 30,
+          "step": 1,
+          "unit": "年"
+        },
+        "children": []
+      },
+      "metrics": {
+        "type": "Grid",
+        "props": {},
+        "children": ["payment", "interest", "total"]
+      },
+      "payment": {
+        "type": "Metric",
+        "props": {
+          "label": "每月还款",
+          "value": {
+            "$state": "/computed/paymentText"
+          }
+        },
+        "children": []
+      },
+      "interest": {
+        "type": "Metric",
+        "props": {
+          "label": "利息总额",
+          "value": {
+            "$state": "/computed/interestText"
+          }
+        },
+        "children": []
+      },
+      "total": {
+        "type": "Metric",
+        "props": {
+          "label": "还款总额",
+          "value": {
+            "$state": "/computed/totalText"
+          }
+        },
+        "children": []
+      },
+      "ratio": {
+        "type": "Text",
+        "props": {
+          "text": {
+            "$state": "/computed/ratioText"
+          },
+          "variant": "caption"
+        },
+        "children": []
+      },
+      "chart": {
+        "type": "Chart",
+        "props": {
+          "kind": "line",
+          "title": "剩余本金与累计已还（万元）",
+          "points": {
+            "$state": "/computed/balance"
+          }
+        },
+        "children": []
+      }
+    }
+  },
+  "state": {
+    "data": {},
+    "form": {
+      "loan": {
+        "amount": 100,
+        "rate": 3.5,
+        "years": 30
+      }
+    },
+    "ui": {},
+    "computed": {
+      "principal": "form.loan.amount * 10000",
+      "r": "form.loan.rate / 1200",
+      "n": "form.loan.years * 12",
+      "payment": "pmt(r, n, principal)",
+      "paymentText": "currency(payment)",
+      "interestText": "currency(payment * n - principal, 0)",
+      "totalText": "currency(payment * n, 0)",
+      "ratioText": "'利息占还款总额的 ' + percent((payment * n - principal) / (payment * n))",
+      "balance": {
+        "range": [0, "form.loan.years"],
+        "series": {
+          "剩余本金": "round(if(r == 0, principal - payment * 12 * t, principal * (1 + r) ^ (12 * t) - payment * ((1 + r) ^ (12 * t) - 1) / r) / 10000, 1)",
+          "累计已还": "round(payment * 12 * t / 10000, 1)"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,199 @@
+{
+  "protocolVersion": "opsique-ui/0.1",
+  "context": {
+    "threadId": "",
+    "viewId": "flowchart-demo",
+    "revision": 1
+  },
+  "spec": {
+    "root": "root",
+    "elements": {
+      "root": {
+        "type": "Card",
+        "props": {
+          "title": "流程图预览"
+        },
+        "children": ["intro", "direction", "flow", "advance"]
+      },
+      "intro": {
+        "type": "Text",
+        "props": {
+          "text": "本地示例：支持上下和左右滚动，点击节点查看详情。回路线表示补充后重新审核。",
+          "variant": "caption"
+        },
+        "children": []
+      },
+      "direction": {
+        "type": "Select",
+        "props": {
+          "label": "布局方向",
+          "value": {
+            "$bindState": "/ui/direction"
+          },
+          "options": [
+            {
+              "label": "纵向",
+              "value": "vertical"
+            },
+            {
+              "label": "横向",
+              "value": "horizontal"
+            }
+          ]
+        },
+        "children": []
+      },
+      "flow": {
+        "type": "Flowchart",
+        "props": {
+          "title": "内容发布流程",
+          "direction": {
+            "$state": "/ui/direction"
+          },
+          "nodes": {
+            "$state": "/ui/nodes"
+          },
+          "edges": {
+            "$state": "/data/edges"
+          }
+        },
+        "children": []
+      },
+      "advance": {
+        "type": "Button",
+        "props": {
+          "label": "推进流程",
+          "variant": "primary"
+        },
+        "children": [],
+        "on": {
+          "press": {
+            "action": "setState",
+            "params": {
+              "statePath": "/ui/nodes",
+              "value": [
+                {
+                  "id": "start",
+                  "label": "开始",
+                  "kind": "start",
+                  "status": "completed",
+                  "detail": "收到任务请求，准备进入处理流程。"
+                },
+                {
+                  "id": "collect",
+                  "label": "收集资料",
+                  "status": "completed",
+                  "detail": "汇总业务数据与用户需求。"
+                },
+                {
+                  "id": "review",
+                  "label": "审核通过？",
+                  "kind": "decision",
+                  "status": "completed",
+                  "detail": "检查资料是否完整，并决定是否进入发布环节。"
+                },
+                {
+                  "id": "publish",
+                  "label": "发布结果",
+                  "status": "active",
+                  "detail": "审核通过后发布，当前仅展示流程状态。"
+                },
+                {
+                  "id": "revise",
+                  "label": "补充修改",
+                  "status": "pending",
+                  "detail": "资料不足时补充修改，再返回审核。"
+                },
+                {
+                  "id": "end",
+                  "label": "结束",
+                  "kind": "end",
+                  "status": "pending",
+                  "detail": "流程完成。"
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "state": {
+    "data": {
+      "edges": [
+        {
+          "from": "start",
+          "to": "collect"
+        },
+        {
+          "from": "collect",
+          "to": "review"
+        },
+        {
+          "from": "review",
+          "to": "publish",
+          "label": "通过"
+        },
+        {
+          "from": "review",
+          "to": "revise",
+          "label": "待补充"
+        },
+        {
+          "from": "revise",
+          "to": "review",
+          "label": "重新审核"
+        },
+        {
+          "from": "publish",
+          "to": "end"
+        }
+      ]
+    },
+    "form": {},
+    "ui": {
+      "direction": "vertical",
+      "nodes": [
+        {
+          "id": "start",
+          "label": "开始",
+          "kind": "start",
+          "status": "completed",
+          "detail": "收到任务请求，准备进入处理流程。"
+        },
+        {
+          "id": "collect",
+          "label": "收集资料",
+          "status": "completed",
+          "detail": "汇总业务数据与用户需求。"
+        },
+        {
+          "id": "review",
+          "label": "审核通过？",
+          "kind": "decision",
+          "status": "active",
+          "detail": "检查资料是否完整，并决定是否进入发布环节。"
+        },
+        {
+          "id": "publish",
+          "label": "发布结果",
+          "status": "pending",
+          "detail": "审核通过后发布，当前仅展示流程状态。"
+        },
+        {
+          "id": "revise",
+          "label": "补充修改",
+          "status": "pending",
+          "detail": "资料不足时补充修改，再返回审核。"
+        },
+        {
+          "id": "end",
+          "label": "结束",
+          "kind": "end",
+          "status": "pending",
+          "detail": "流程完成。"
+        }
+      ]
+    }
+  }
+}

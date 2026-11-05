@@ -1,0 +1,192 @@
+{
+  "context": {
+    "threadId": "demo-conversation",
+    "viewId": "analysis-result",
+    "revision": 1
+  },
+  "spec": {
+    "root": "root",
+    "elements": {
+      "root": {
+        "type": "Card",
+        "props": {
+          "title": "本周直播与履约概览"
+        },
+        "children": ["overview", "live", "fulfillment", "products"],
+        "slots": {
+          "header": ["eyebrow", "title"],
+          "footer": ["actions"]
+        }
+      },
+      "eyebrow": {
+        "type": "Text",
+        "props": {
+          "text": "运营报告",
+          "variant": "caption"
+        },
+        "children": []
+      },
+      "title": {
+        "type": "Text",
+        "props": {
+          "text": "本周直播与履约概览",
+          "variant": "heading"
+        },
+        "children": []
+      },
+      "overview": {
+        "type": "Grid",
+        "props": {},
+        "children": ["rate", "summary"]
+      },
+      "rate": {
+        "type": "Metric",
+        "props": {
+          "label": "履约率",
+          "value": {
+            "$state": "/data/fulfillmentRate"
+          }
+        },
+        "children": []
+      },
+      "summary": {
+        "type": "Stack",
+        "props": {},
+        "children": ["status", "description"]
+      },
+      "status": {
+        "type": "Text",
+        "props": {
+          "text": "整体运行稳定",
+          "variant": "heading"
+        },
+        "children": []
+      },
+      "description": {
+        "type": "Text",
+        "props": {
+          "text": {
+            "$state": "/data/summary"
+          },
+          "variant": "caption"
+        },
+        "children": []
+      },
+      "live": {
+        "type": "Stack",
+        "props": {
+          "spacing": "compact"
+        },
+        "children": ["live-title", "live-detail"]
+      },
+      "live-title": {
+        "type": "Text",
+        "props": {
+          "text": "直播 · 本周已完成 15 场",
+          "variant": "heading"
+        },
+        "children": []
+      },
+      "live-detail": {
+        "type": "Text",
+        "props": {
+          "text": "计划 18 场 · 完成率 83%",
+          "variant": "caption"
+        },
+        "children": []
+      },
+      "fulfillment": {
+        "type": "Stack",
+        "props": {
+          "spacing": "compact"
+        },
+        "children": ["fulfillment-title", "fulfillment-detail"]
+      },
+      "fulfillment-title": {
+        "type": "Text",
+        "props": {
+          "text": "履约 · 3 位主播进度异常",
+          "variant": "heading"
+        },
+        "children": []
+      },
+      "fulfillment-detail": {
+        "type": "Text",
+        "props": {
+          "text": "1 项已形成跟进待办",
+          "variant": "caption"
+        },
+        "children": []
+      },
+      "products": {
+        "type": "Stack",
+        "props": {
+          "spacing": "compact"
+        },
+        "children": ["products-title", "products-detail"]
+      },
+      "products-title": {
+        "type": "Text",
+        "props": {
+          "text": "商品 · 商家商品数据已更新",
+          "variant": "heading"
+        },
+        "children": []
+      },
+      "products-detail": {
+        "type": "Text",
+        "props": {
+          "text": "2 项数据口径需要确认",
+          "variant": "caption"
+        },
+        "children": []
+      },
+      "actions": {
+        "type": "ActionGroup",
+        "props": {},
+        "children": ["follow-up", "report"]
+      },
+      "follow-up": {
+        "type": "Button",
+        "props": {
+          "label": "继续追问",
+          "variant": "secondary"
+        },
+        "children": [],
+        "on": {
+          "press": {
+            "action": "dispatch",
+            "params": {
+              "actionId": "demo.follow-up"
+            }
+          }
+        }
+      },
+      "report": {
+        "type": "Button",
+        "props": {
+          "label": "查看报告",
+          "variant": "primary"
+        },
+        "children": [],
+        "on": {
+          "press": {
+            "action": "dispatch",
+            "params": {
+              "actionId": "demo.open-report"
+            }
+          }
+        }
+      }
+    }
+  },
+  "state": {
+    "data": {
+      "fulfillmentRate": "83%",
+      "summary": "计划直播 18 场，已完成 15 场，3 项需要关注。"
+    },
+    "form": {},
+    "ui": {}
+  },
+  "protocolVersion": "opsique-ui/0.1"
+}

@@ -1,0 +1,370 @@
+.renderer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+  font-size: 13px;
+  line-height: 1.7;
+}
+.renderer .render-node {
+  min-width: 0;
+}
+.renderer h3 {
+  font-size: 15px;
+  margin-bottom: 5px;
+}
+.renderer .level-1 {
+  font-size: 22px;
+}
+.renderer .render-card {
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  box-shadow: none;
+}
+.renderer .render-card.clear {
+  border: 0;
+  padding: 0;
+  background: transparent;
+}
+.renderer .render-card > footer {
+  padding-top: 15px;
+  border-top: 1px solid var(--line);
+}
+:where(.renderer, .render-overlay) .render-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+  gap: 16px;
+}
+:where(.renderer, .render-overlay) .horizontal {
+  display: flex;
+  gap: 16px;
+  overflow: auto;
+}
+:where(.renderer, .render-overlay) .horizontal > .render-node,
+:where(.renderer, .render-overlay) .horizontal > .media-frame {
+  min-width: 210px;
+  flex: 1;
+}
+:where(.renderer, .render-overlay) .render-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+:where(.renderer, .render-overlay) .field-label {
+  font-size: 12px;
+  font-weight: 550;
+}
+:where(.renderer, .render-overlay) .error {
+  font-size: 11px;
+  display: block;
+  line-height: 1.7;
+}
+:where(.renderer, .render-overlay) .render-text {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+:where(.renderer, .render-overlay) .render-text.caption {
+  font-size: 11px;
+  color: var(--muted);
+}
+:where(.renderer, .render-overlay) .metric {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 15px;
+  border-radius: 14px;
+  background: var(--canvas);
+  min-width: 0;
+}
+:where(.renderer, .render-overlay) .metric > span {
+  font-size: 11px;
+}
+:where(.renderer, .render-overlay) .metric strong,
+:where(.renderer, .render-overlay) .metric-value {
+  font-size: 29px;
+  font-weight: 550;
+  line-height: 1.3;
+  letter-spacing: -0.8px;
+}
+:where(.renderer, .render-overlay) .metric small {
+  font-size: 10px;
+}
+:where(.renderer, .render-overlay) .chart-frame {
+  min-width: 0;
+}
+:where(.renderer, .render-overlay) .chart-frame > .row {
+  margin-top: 10px;
+}
+:where(.renderer, .render-overlay) .chart-frame > .muted {
+  font-size: 11px;
+}
+:where(.renderer, .render-overlay) .table-scroll {
+  overflow: auto;
+}
+/* HeroUI calendars are tables too (role="grid"); keep data-table rules off
+   them. :where() keeps these as weak as the plain element selectors were. */
+:where(.renderer, .render-overlay) table:where(:not([role='grid'])) {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  margin-top: 10px;
+}
+:where(.renderer, .render-overlay) :where(table:not([role='grid'])) th {
+  text-align: left;
+  background: var(--canvas);
+  padding: 5px 0;
+}
+:where(.renderer, .render-overlay) th .button {
+  font-weight: 600;
+  font-size: 11px;
+}
+:where(.renderer, .render-overlay) :where(table:not([role='grid'])) td {
+  padding: 13px 11px;
+  border-bottom: 1px solid var(--line);
+}
+:where(.renderer, .render-overlay) .list-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 12px;
+}
+:where(.renderer, .render-overlay) .list-row:last-child {
+  border: 0;
+}
+:where(.renderer, .render-overlay) .list-row p {
+  font-size: 11px;
+  margin-top: 4px;
+}
+:where(.renderer, .render-overlay) .callout {
+  padding: 14px 17px;
+  border-radius: 12px;
+  background: var(--brand-soft);
+  display: flex;
+  gap: 12px;
+  font-size: 12px;
+}
+:where(.renderer, .render-overlay) .callout.danger {
+  background: #e87f8715;
+  color: #c26a78;
+}
+:where(.renderer, .render-overlay) .code-frame {
+  padding: 14px;
+  border-radius: 12px;
+  background: var(--canvas);
+  border: 1px solid var(--line);
+}
+:where(.renderer, .render-overlay) pre {
+  overflow: auto;
+  font-size: 11px;
+  line-height: 1.8;
+  max-height: 450px;
+  margin: 8px 0;
+  white-space: pre-wrap;
+}
+:where(.renderer, .render-overlay) .render-list {
+  padding-left: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+:where(.renderer, .render-overlay) .render-list.numbered {
+  list-style: decimal;
+}
+:where(.renderer, .render-overlay) .render-list.plain {
+  list-style: none;
+  padding: 0;
+}
+:where(.renderer, .render-overlay) .render-list.bullet {
+  list-style: disc;
+}
+:where(.renderer, .render-overlay) .timeline > div {
+  padding: 0 0 24px 25px;
+  position: relative;
+  border-left: 1px solid var(--line);
+  margin-left: 8px;
+}
+:where(.renderer, .render-overlay) .timeline-dot {
+  position: absolute;
+  left: -6px;
+  top: 6px;
+  width: 11px;
+  height: 11px;
+  background: var(--brand);
+  border-radius: 50%;
+  border: 2px solid var(--surface);
+}
+:where(.renderer, .render-overlay) .timeline p {
+  font-size: 11px;
+}
+:where(.renderer, .render-overlay) .step-labels {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+:where(.renderer, .render-overlay) .step-labels > span {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--muted);
+}
+:where(.renderer, .render-overlay) .step-labels b {
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  width: 27px;
+  height: 27px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+}
+:where(.renderer, .render-overlay) .step-labels .active {
+  color: var(--brand-dark);
+}
+:where(.renderer, .render-overlay) .step-labels .active b {
+  background: var(--brand-soft);
+  border-color: var(--brand);
+}
+:where(.renderer, .render-overlay) .accordion {
+  border-bottom: 1px solid var(--line);
+  padding: 13px 0;
+}
+:where(.renderer, .render-overlay) .accordion > summary {
+  cursor: pointer;
+  font-weight: 550;
+  padding: 5px;
+}
+:where(.renderer, .render-overlay) .accordion[open] > summary {
+  margin-bottom: 12px;
+}
+:where(.renderer, .render-overlay) .tab-panel {
+  padding-top: 18px;
+}
+:where(.renderer, .render-overlay) .item-card.selected {
+  border-color: var(--brand);
+}
+:where(.renderer, .render-overlay) .choice {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  background: var(--canvas);
+  border-radius: 9px;
+  cursor: pointer;
+}
+:where(.renderer, .render-overlay) .choice input {
+  accent-color: var(--brand);
+}
+:where(.renderer, .render-overlay) .choice small {
+  display: block;
+  color: var(--muted);
+  font-size: 10px;
+}
+:where(.renderer, .render-overlay) .media-frame {
+  position: relative;
+}
+:where(.renderer, .render-overlay) .media-frame > .expand {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  z-index: 2;
+  opacity: 0.9;
+  font-size: 10px;
+  gap: 5px;
+}
+:where(.renderer, .render-overlay) .media-frame figure {
+  margin: 0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+:where(.renderer, .render-overlay) .media-frame figure img {
+  width: 100%;
+  object-fit: cover;
+  max-height: 320px;
+  display: block;
+}
+:where(.renderer, .render-overlay) .media-frame figcaption {
+  font-size: 10px;
+  color: var(--muted);
+  padding: 8px;
+}
+:where(.renderer, .render-overlay) .fullscreen {
+  width: 100vw;
+  max-width: 100vw;
+  height: 100dvh;
+  max-height: 100dvh;
+  border: 0;
+  padding: 0;
+  background: color-mix(in srgb, var(--canvas) 85%, transparent);
+  backdrop-filter: blur(24px);
+  color: var(--ink);
+}
+:where(.renderer, .render-overlay) .fullscreen::backdrop {
+  background: #19303655;
+  backdrop-filter: blur(8px);
+}
+:where(.renderer, .render-overlay) .fullscreen .media-toolbar {
+  position: absolute;
+  top: 25px;
+  right: 30px;
+  z-index: 10;
+  display: flex;
+  gap: 8px;
+}
+:where(.renderer, .render-overlay) .media-stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  touch-action: none;
+  cursor: grab;
+}
+:where(.renderer, .render-overlay) .media-stage > div {
+  transition: transform 0.08s ease-out;
+  flex-shrink: 0;
+  max-height: 90vh;
+  overflow: visible;
+}
+:where(.renderer, .render-overlay) .media-stage img {
+  max-height: 75vh !important;
+  object-fit: contain !important;
+}
+:where(.renderer, .render-overlay) .media-stage .map {
+  height: 65vh;
+}
+:where(.renderer, .render-overlay) .flow-scroll {
+  overflow: auto;
+  max-height: 620px;
+  padding: 12px 0;
+}
+:where(.renderer, .render-overlay) .flow-node {
+  cursor: pointer;
+}
+:where(.renderer, .render-overlay) .flow-node:hover rect {
+  stroke: var(--brand);
+  stroke-width: 2;
+}
+:where(.renderer, .render-overlay) .map {
+  height: 300px;
+  border-radius: 12px;
+  z-index: 0;
+}
+:where(.renderer, .render-overlay) .mermaid-view {
+  overflow: auto;
+  padding: 15px;
+}
+:where(.renderer, .render-overlay) .mermaid-view svg {
+  width: 100%;
+  max-height: 500px;
+}

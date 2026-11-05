@@ -1,0 +1,168 @@
+{
+  "name": "task-list",
+  "title": "任务列表与条件显示",
+  "context": {
+    "threadId": "demo-conversation",
+    "viewId": "task-list",
+    "revision": 1
+  },
+  "spec": {
+    "root": "root",
+    "elements": {
+      "root": {
+        "type": "Card",
+        "props": {
+          "title": "任务工作台 · 演示"
+        },
+        "children": ["note", "filter", "tasks"]
+      },
+      "note": {
+        "type": "Text",
+        "props": {
+          "text": "重复列表、状态标签、条件显示与带对象的动作。",
+          "variant": "caption"
+        },
+        "children": []
+      },
+      "filter": {
+        "type": "Select",
+        "props": {
+          "label": "显示",
+          "value": {
+            "$bindState": "/ui/taskFilter"
+          },
+          "options": [
+            {
+              "label": "全部任务",
+              "value": "all"
+            },
+            {
+              "label": "待处理",
+              "value": "open"
+            },
+            {
+              "label": "已完成",
+              "value": "done"
+            }
+          ]
+        },
+        "children": []
+      },
+      "tasks": {
+        "type": "Stack",
+        "props": {},
+        "children": ["task"],
+        "repeat": {
+          "statePath": "/data/tasks",
+          "key": "id"
+        }
+      },
+      "task": {
+        "type": "Card",
+        "props": {
+          "title": {
+            "$item": "title"
+          }
+        },
+        "children": ["status"],
+        "slots": {
+          "footer": ["taskAction"]
+        },
+        "visible": {
+          "$or": [
+            {
+              "$state": "/ui/taskFilter",
+              "eq": "all"
+            },
+            {
+              "$and": [
+                {
+                  "$state": "/ui/taskFilter",
+                  "eq": "open"
+                },
+                {
+                  "$item": "status",
+                  "eq": "open"
+                }
+              ]
+            },
+            {
+              "$and": [
+                {
+                  "$state": "/ui/taskFilter",
+                  "eq": "done"
+                },
+                {
+                  "$item": "status",
+                  "eq": "done"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "status": {
+        "type": "Badge",
+        "props": {
+          "label": {
+            "$item": "statusLabel"
+          },
+          "tone": {
+            "$item": "tone"
+          }
+        },
+        "children": []
+      },
+      "taskAction": {
+        "type": "Button",
+        "props": {
+          "label": "查看 / 追问",
+          "variant": "secondary"
+        },
+        "children": [],
+        "on": {
+          "press": {
+            "action": "dispatch",
+            "params": {
+              "actionId": "demo.open-task",
+              "taskId": {
+                "$item": "id"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "state": {
+    "data": {
+      "tasks": [
+        {
+          "id": "task-1",
+          "title": "排期履约核对",
+          "status": "open",
+          "statusLabel": "等待处理",
+          "tone": "warning"
+        },
+        {
+          "id": "task-2",
+          "title": "昨日直播报告",
+          "status": "done",
+          "statusLabel": "已完成",
+          "tone": "success"
+        },
+        {
+          "id": "task-3",
+          "title": "商品资料检查",
+          "status": "open",
+          "statusLabel": "等待补资料",
+          "tone": "warning"
+        }
+      ]
+    },
+    "form": {},
+    "ui": {
+      "taskFilter": "all"
+    }
+  }
+}

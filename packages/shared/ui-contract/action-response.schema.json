@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["outcome", "document"],
+  "properties": {
+    "outcome": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "message"],
+      "properties": {
+        "status": {
+          "enum": ["accepted", "completed", "rejected", "unknown"]
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "document": {
+      "$ref": "document.schema.json"
+    }
+  }
+}

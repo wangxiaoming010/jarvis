@@ -1,0 +1,249 @@
+{
+  "name": "controls-gallery",
+  "title": "玻璃控件与表单状态",
+  "context": {
+    "threadId": "controls-preview",
+    "viewId": "controls-gallery",
+    "revision": 1
+  },
+  "spec": {
+    "root": "root",
+    "elements": {
+      "root": {
+        "type": "Card",
+        "props": {
+          "title": "偏好与参数"
+        },
+        "children": ["intro", "form", "status"]
+      },
+      "intro": {
+        "type": "Text",
+        "props": {
+          "variant": "caption",
+          "text": "本地预览：玻璃控件 × HeroUI。调整后点击提交，数据仅在本机捕获。"
+        },
+        "children": []
+      },
+      "form": {
+        "type": "Form",
+        "props": {
+          "spacing": "relaxed"
+        },
+        "children": ["volume", "notify", "mode", "consent", "disabled", "submit"]
+      },
+      "volume": {
+        "type": "Slider",
+        "props": {
+          "label": "输出强度",
+          "value": {
+            "$bindState": "/form/settings/volume"
+          },
+          "min": 0,
+          "max": 100,
+          "step": 5,
+          "unit": "%",
+          "description": "拖动或使用方向键调整，每次 5%。"
+        },
+        "children": [],
+        "on": {
+          "focus": {
+            "action": "setState",
+            "params": {
+              "statePath": "/ui/lastEvent",
+              "value": "输出强度 focus"
+            }
+          },
+          "blur": {
+            "action": "setState",
+            "params": {
+              "statePath": "/ui/lastEvent",
+              "value": "输出强度 blur"
+            }
+          },
+          "change": {
+            "action": "setState",
+            "params": {
+              "statePath": "/ui/lastEvent",
+              "value": "输出强度 change"
+            }
+          }
+        }
+      },
+      "notify": {
+        "type": "Switch",
+        "props": {
+          "label": "启用通知",
+          "value": {
+            "$bindState": "/form/settings/notifications"
+          },
+          "description": "控制本地预览的通知偏好。"
+        },
+        "children": [],
+        "on": {
+          "focus": {
+            "action": "setState",
+            "params": {
+              "statePath": "/ui/lastEvent",
+              "value": "启用通知 focus"
+            }
+          },
+          "blur": {
+            "action": "setState",
+            "params": {
+              "statePath": "/ui/lastEvent",
+              "value": "启用通知 blur"
+            }
+          },
+          "change": {
+            "action": "setState",
+            "params": {
+              "statePath": "/ui/lastEvent",
+              "value": "启用通知 change"
+            }
+          }
+        }
+      },
+      "mode": {
+        "type": "Radio",
+        "props": {
+          "label": "输出模式",
+          "value": {
+            "$bindState": "/form/settings/mode"
+          },
+          "required": true,
+          "options": [
+            {
+              "label": "简洁",
+              "value": "brief",
+              "description": "保留关键结论"
+            },
+            {
+              "label": "详细",
+              "value": "detailed",
+              "description": "展示完整分析过程"
+            },
+            {
+              "label": "暂不可用",
+              "value": "unavailable",
+              "disabled": true
+            }
+          ]
+        },
+        "children": [],
+        "on": {
+          "focus": {
+            "action": "setState",
+            "params": {
+              "statePath": "/ui/lastEvent",
+              "value": "输出模式 focus"
+            }
+          },
+          "blur": {
+            "action": "setState",
+            "params": {
+              "statePath": "/ui/lastEvent",
+              "value": "输出模式 blur"
+            }
+          },
+          "change": {
+            "action": "setState",
+            "params": {
+              "statePath": "/ui/lastEvent",
+              "value": "输出模式 change"
+            }
+          }
+        }
+      },
+      "consent": {
+        "type": "Checkbox",
+        "props": {
+          "label": "确认使用当前参数",
+          "description": "必选，勾选后才能提交。",
+          "value": {
+            "$bindState": "/form/settings/consent"
+          },
+          "required": true
+        },
+        "children": [],
+        "on": {
+          "focus": {
+            "action": "setState",
+            "params": {
+              "statePath": "/ui/lastEvent",
+              "value": "确认使用当前参数 focus"
+            }
+          },
+          "blur": {
+            "action": "setState",
+            "params": {
+              "statePath": "/ui/lastEvent",
+              "value": "确认使用当前参数 blur"
+            }
+          },
+          "change": {
+            "action": "setState",
+            "params": {
+              "statePath": "/ui/lastEvent",
+              "value": "确认使用当前参数 change"
+            }
+          }
+        }
+      },
+      "disabled": {
+        "type": "Switch",
+        "props": {
+          "label": "禁用示例",
+          "value": {
+            "$bindState": "/form/settings/locked"
+          },
+          "disabled": true
+        },
+        "children": []
+      },
+      "submit": {
+        "type": "Button",
+        "props": {
+          "label": "提交偏好"
+        },
+        "children": [],
+        "on": {
+          "press": {
+            "action": "submitForm",
+            "params": {
+              "actionId": "demo.controls",
+              "formPath": "/form/settings",
+              "input": {
+                "$state": "/form/settings"
+              }
+            }
+          }
+        }
+      },
+      "status": {
+        "type": "Text",
+        "props": {
+          "variant": "caption",
+          "text": {
+            "$state": "/ui/lastEvent"
+          }
+        },
+        "children": []
+      }
+    }
+  },
+  "state": {
+    "data": {},
+    "form": {
+      "settings": {
+        "volume": 40,
+        "notifications": false,
+        "mode": "",
+        "consent": false,
+        "locked": true
+      }
+    },
+    "ui": {
+      "lastEvent": "尚未交互"
+    }
+  }
+}

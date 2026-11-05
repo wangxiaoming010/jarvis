@@ -1,0 +1,240 @@
+{
+  "protocolVersion": "opsique-ui/0.1",
+  "context": {
+    "threadId": "",
+    "viewId": "chart-gallery",
+    "revision": 1
+  },
+  "spec": {
+    "root": "root",
+    "elements": {
+      "root": {
+        "type": "Card",
+        "props": {
+          "title": "原生控件与图表"
+        },
+        "children": ["intro", "name", "kind", "chart", "actions", "compare"]
+      },
+      "intro": {
+        "type": "Text",
+        "props": {
+          "text": "本地示例数据。切换图表类型、点击更新数据，或按住图表查看数值。",
+          "variant": "caption"
+        },
+        "children": []
+      },
+      "name": {
+        "type": "TextField",
+        "props": {
+          "label": "报告名称",
+          "placeholder": "输入报告名称",
+          "value": {
+            "$bindState": "/form/name"
+          }
+        },
+        "children": []
+      },
+      "kind": {
+        "type": "Select",
+        "props": {
+          "label": "图表类型",
+          "value": {
+            "$bindState": "/ui/chartKind"
+          },
+          "options": [
+            {
+              "label": "折线图",
+              "value": "line"
+            },
+            {
+              "label": "面积图",
+              "value": "area"
+            },
+            {
+              "label": "柱状图",
+              "value": "bar"
+            },
+            {
+              "label": "散点图",
+              "value": "scatter"
+            },
+            {
+              "label": "饼图",
+              "value": "pie"
+            },
+            {
+              "label": "环形图",
+              "value": "donut"
+            }
+          ]
+        },
+        "children": []
+      },
+      "chart": {
+        "type": "Chart",
+        "props": {
+          "title": "本周趋势",
+          "kind": {
+            "$state": "/ui/chartKind"
+          },
+          "points": {
+            "$state": "/ui/chartPoints"
+          }
+        },
+        "children": []
+      },
+      "actions": {
+        "type": "ActionGroup",
+        "props": {},
+        "children": ["update", "reset"]
+      },
+      "compare": {
+        "type": "Chart",
+        "props": {
+          "title": "多系列对比",
+          "kind": "bar",
+          "points": [
+            {
+              "x": "周一",
+              "y": 28,
+              "series": "本周"
+            },
+            {
+              "x": "周二",
+              "y": 45,
+              "series": "本周"
+            },
+            {
+              "x": "周三",
+              "y": 36,
+              "series": "本周"
+            },
+            {
+              "x": "周一",
+              "y": 23,
+              "series": "上周"
+            },
+            {
+              "x": "周二",
+              "y": 39,
+              "series": "上周"
+            },
+            {
+              "x": "周三",
+              "y": 42,
+              "series": "上周"
+            }
+          ]
+        },
+        "children": []
+      },
+      "update": {
+        "type": "Button",
+        "props": {
+          "label": "更新数据",
+          "variant": "primary"
+        },
+        "children": [],
+        "on": {
+          "press": {
+            "action": "setState",
+            "params": {
+              "statePath": "/ui/chartPoints",
+              "value": [
+                {
+                  "x": "周一",
+                  "y": 42
+                },
+                {
+                  "x": "周二",
+                  "y": 30
+                },
+                {
+                  "x": "周三",
+                  "y": 64
+                },
+                {
+                  "x": "周四",
+                  "y": 48
+                },
+                {
+                  "x": "周五",
+                  "y": 85
+                }
+              ]
+            }
+          }
+        }
+      },
+      "reset": {
+        "type": "Button",
+        "props": {
+          "label": "重置数据",
+          "variant": "secondary"
+        },
+        "children": [],
+        "on": {
+          "press": {
+            "action": "setState",
+            "params": {
+              "statePath": "/ui/chartPoints",
+              "value": [
+                {
+                  "x": "周一",
+                  "y": 28
+                },
+                {
+                  "x": "周二",
+                  "y": 45
+                },
+                {
+                  "x": "周三",
+                  "y": 36
+                },
+                {
+                  "x": "周四",
+                  "y": 68
+                },
+                {
+                  "x": "周五",
+                  "y": 52
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "state": {
+    "data": {},
+    "form": {
+      "name": ""
+    },
+    "ui": {
+      "chartKind": "line",
+      "chartPoints": [
+        {
+          "x": "周一",
+          "y": 28
+        },
+        {
+          "x": "周二",
+          "y": 45
+        },
+        {
+          "x": "周三",
+          "y": 36
+        },
+        {
+          "x": "周四",
+          "y": 68
+        },
+        {
+          "x": "周五",
+          "y": 52
+        }
+      ]
+    }
+  }
+}

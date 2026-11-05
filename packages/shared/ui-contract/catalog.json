@@ -1,0 +1,1469 @@
+{
+  "version": "opsique-ui/0.1",
+  "components": {
+    "Card": {
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "variant": {
+          "type": "string",
+          "values": ["surface", "outline", "clear"]
+        }
+      },
+      "required": [],
+      "slots": ["default", "header", "footer"],
+      "events": []
+    },
+    "Stack": {
+      "properties": {
+        "spacing": {
+          "type": "string",
+          "values": ["compact", "normal", "relaxed"]
+        }
+      },
+      "required": [],
+      "slots": ["default"],
+      "events": []
+    },
+    "Grid": {
+      "properties": {
+        "spacing": {
+          "type": "string",
+          "values": ["compact", "normal", "relaxed"]
+        }
+      },
+      "required": [],
+      "slots": ["default"],
+      "events": []
+    },
+    "ActionGroup": {
+      "properties": {
+        "spacing": {
+          "type": "string",
+          "values": ["compact", "normal", "relaxed"]
+        }
+      },
+      "required": [],
+      "slots": ["default"],
+      "events": []
+    },
+    "Form": {
+      "properties": {
+        "spacing": {
+          "type": "string",
+          "values": ["compact", "normal", "relaxed"]
+        }
+      },
+      "required": [],
+      "slots": ["default"],
+      "events": ["submit"]
+    },
+    "Text": {
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "variant": {
+          "type": "string",
+          "values": ["body", "heading", "caption"]
+        }
+      },
+      "required": ["text"],
+      "slots": [],
+      "events": []
+    },
+    "Metric": {
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "value": {
+          "type": "scalar"
+        }
+      },
+      "required": ["label", "value"],
+      "slots": [],
+      "events": []
+    },
+    "Badge": {
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "tone": {
+          "type": "string",
+          "values": ["neutral", "accent", "success", "warning", "danger"]
+        },
+        "variant": {
+          "type": "string",
+          "values": ["soft", "solid", "outline"]
+        }
+      },
+      "required": ["label"],
+      "slots": [],
+      "events": []
+    },
+    "Button": {
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "variant": {
+          "type": "string",
+          "values": ["primary", "secondary", "outline", "tertiary"]
+        },
+        "disabled": {
+          "type": "boolean"
+        },
+        "icon": {
+          "type": "string",
+          "values": [
+            "archive",
+            "arrow-up",
+            "bell",
+            "calendar-days",
+            "car-front",
+            "chart-column",
+            "check",
+            "chevron-down",
+            "chevron-left",
+            "chevron-right",
+            "circle-check",
+            "circle-dashed",
+            "circle-help",
+            "circle-x",
+            "clock",
+            "cloud",
+            "cloud-rain",
+            "cloud-sun",
+            "ellipsis",
+            "file-text",
+            "layout-grid",
+            "link",
+            "lock-keyhole",
+            "log-out",
+            "mail",
+            "message-circle",
+            "messages-square",
+            "mic",
+            "music-2",
+            "paperclip",
+            "pencil",
+            "plane",
+            "plus",
+            "route",
+            "search",
+            "settings",
+            "share",
+            "shield-check",
+            "snowflake",
+            "sparkles",
+            "star",
+            "sun",
+            "sun-moon",
+            "test-tube",
+            "user-round",
+            "users-round",
+            "video",
+            "wand-sparkles",
+            "wind",
+            "x"
+          ]
+        }
+      },
+      "required": ["label"],
+      "slots": [],
+      "events": ["press"]
+    },
+    "TextField": {
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "writable": true
+        },
+        "placeholder": {
+          "type": "string"
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "maxLength": {
+          "type": "number"
+        },
+        "disabled": {
+          "type": "boolean"
+        }
+      },
+      "required": ["label", "value"],
+      "slots": [],
+      "events": ["focus", "blur"]
+    },
+    "Select": {
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "writable": true
+        },
+        "options": {
+          "type": "array"
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "disabled": {
+          "type": "boolean"
+        }
+      },
+      "required": ["label", "value", "options"],
+      "slots": [],
+      "events": ["focus", "blur"]
+    },
+    "Chart": {
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "points": {
+          "type": "array"
+        },
+        "kind": {
+          "type": "string",
+          "values": ["line", "area", "bar", "scatter", "pie", "donut"]
+        },
+        "layout": {
+          "type": "string",
+          "values": ["vertical", "horizontal"]
+        },
+        "stacked": {
+          "type": "boolean"
+        },
+        "ranges": {
+          "type": "array"
+        },
+        "defaultRangeId": {
+          "type": "string"
+        },
+        "showSummary": {
+          "type": "boolean"
+        },
+        "format": {
+          "type": "object"
+        },
+        "mode": {
+          "type": "string",
+          "values": ["standard", "profit-loss", "live"]
+        },
+        "baseline": {
+          "type": "number"
+        },
+        "windowSize": {
+          "type": "number"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "required": ["points"],
+      "slots": [],
+      "events": []
+    },
+    "Table": {
+      "properties": {
+        "columns": {
+          "type": "array"
+        },
+        "rows": {
+          "type": "array"
+        },
+        "filterable": {
+          "type": "boolean"
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "required": ["columns", "rows"],
+      "slots": [],
+      "events": []
+    },
+    "TextArea": {
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "writable": true
+        },
+        "placeholder": {
+          "type": "string"
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "maxLength": {
+          "type": "number"
+        },
+        "disabled": {
+          "type": "boolean"
+        },
+        "rows": {
+          "type": "number"
+        }
+      },
+      "required": ["label", "value"],
+      "slots": [],
+      "events": ["focus", "blur"]
+    },
+    "Steps": {
+      "properties": {
+        "value": {
+          "type": "number",
+          "writable": true
+        },
+        "labels": {
+          "type": "array"
+        },
+        "disabled": {
+          "type": "boolean"
+        }
+      },
+      "required": ["value", "labels"],
+      "slots": ["default"],
+      "events": []
+    },
+    "Flowchart": {
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "nodes": {
+          "type": "array"
+        },
+        "edges": {
+          "type": "array"
+        },
+        "direction": {
+          "type": "string",
+          "values": ["vertical", "horizontal"]
+        }
+      },
+      "required": ["nodes", "edges"],
+      "slots": [],
+      "events": []
+    },
+    "Slider": {
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "disabled": {
+          "type": "boolean"
+        },
+        "description": {
+          "type": "string"
+        },
+        "value": {
+          "type": "number",
+          "writable": true
+        },
+        "min": {
+          "type": "number"
+        },
+        "max": {
+          "type": "number"
+        },
+        "step": {
+          "type": "number"
+        },
+        "unit": {
+          "type": "string"
+        }
+      },
+      "required": ["label", "value"],
+      "slots": [],
+      "events": ["focus", "blur", "change"]
+    },
+    "Switch": {
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "disabled": {
+          "type": "boolean"
+        },
+        "description": {
+          "type": "string"
+        },
+        "value": {
+          "type": "boolean",
+          "writable": true
+        }
+      },
+      "required": ["label", "value"],
+      "slots": [],
+      "events": ["focus", "blur", "change"]
+    },
+    "Checkbox": {
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "disabled": {
+          "type": "boolean"
+        },
+        "description": {
+          "type": "string"
+        },
+        "value": {
+          "type": "boolean",
+          "writable": true
+        },
+        "required": {
+          "type": "boolean"
+        }
+      },
+      "required": ["label", "value"],
+      "slots": [],
+      "events": ["focus", "blur", "change"]
+    },
+    "Radio": {
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "disabled": {
+          "type": "boolean"
+        },
+        "description": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "writable": true
+        },
+        "options": {
+          "type": "array"
+        },
+        "required": {
+          "type": "boolean"
+        }
+      },
+      "required": ["label", "value", "options"],
+      "slots": [],
+      "events": ["focus", "blur", "change"]
+    },
+    "Heading": {
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "level": {
+          "type": "number"
+        }
+      },
+      "required": ["text"],
+      "slots": [],
+      "events": []
+    },
+    "Divider": {
+      "properties": {},
+      "required": [],
+      "slots": [],
+      "events": []
+    },
+    "Spacer": {
+      "properties": {
+        "size": {
+          "type": "number"
+        }
+      },
+      "required": [],
+      "slots": [],
+      "events": []
+    },
+    "Progress": {
+      "properties": {
+        "value": {
+          "type": "number"
+        },
+        "label": {
+          "type": "string"
+        }
+      },
+      "required": ["value"],
+      "slots": [],
+      "events": []
+    },
+    "Rating": {
+      "properties": {
+        "value": {
+          "type": "number"
+        },
+        "count": {
+          "type": "number"
+        }
+      },
+      "required": ["value"],
+      "slots": [],
+      "events": []
+    },
+    "Callout": {
+      "properties": {
+        "content": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "tone": {
+          "type": "string",
+          "values": ["neutral", "accent", "success", "warning", "danger"]
+        },
+        "icon": {
+          "type": "string",
+          "values": [
+            "archive",
+            "arrow-up",
+            "bell",
+            "calendar-days",
+            "car-front",
+            "chart-column",
+            "check",
+            "chevron-down",
+            "chevron-left",
+            "chevron-right",
+            "circle-check",
+            "circle-dashed",
+            "circle-help",
+            "circle-x",
+            "clock",
+            "cloud",
+            "cloud-rain",
+            "cloud-sun",
+            "ellipsis",
+            "file-text",
+            "layout-grid",
+            "link",
+            "lock-keyhole",
+            "log-out",
+            "mail",
+            "message-circle",
+            "messages-square",
+            "mic",
+            "music-2",
+            "paperclip",
+            "pencil",
+            "plane",
+            "plus",
+            "route",
+            "search",
+            "settings",
+            "share",
+            "shield-check",
+            "snowflake",
+            "sparkles",
+            "star",
+            "sun",
+            "sun-moon",
+            "test-tube",
+            "user-round",
+            "users-round",
+            "video",
+            "wand-sparkles",
+            "wind",
+            "x"
+          ]
+        }
+      },
+      "required": ["content"],
+      "slots": [],
+      "events": []
+    },
+    "TagList": {
+      "properties": {
+        "tags": {
+          "type": "array"
+        }
+      },
+      "required": ["tags"],
+      "slots": [],
+      "events": []
+    },
+    "List": {
+      "properties": {
+        "items": {
+          "type": "array"
+        },
+        "style": {
+          "type": "string",
+          "values": ["bullet", "numbered", "plain"]
+        }
+      },
+      "required": ["items"],
+      "slots": [],
+      "events": []
+    },
+    "CodeBlock": {
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "language": {
+          "type": "string"
+        }
+      },
+      "required": ["code"],
+      "slots": [],
+      "events": []
+    },
+    "Accordion": {
+      "properties": {
+        "labels": {
+          "type": "array"
+        },
+        "multiple": {
+          "type": "boolean"
+        }
+      },
+      "required": ["labels"],
+      "slots": ["default"],
+      "events": []
+    },
+    "Tabs": {
+      "properties": {
+        "labels": {
+          "type": "array"
+        },
+        "defaultValue": {
+          "type": "number"
+        }
+      },
+      "required": ["labels"],
+      "slots": ["default"],
+      "events": []
+    },
+    "Timeline": {
+      "properties": {
+        "steps": {
+          "type": "array"
+        }
+      },
+      "required": ["steps"],
+      "slots": [],
+      "events": []
+    },
+    "Row": {
+      "properties": {
+        "spacing": {
+          "type": "string",
+          "values": ["compact", "normal", "relaxed"]
+        }
+      },
+      "required": [],
+      "slots": ["default"],
+      "events": []
+    },
+    "GaugeChart": {
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "value": {
+          "type": "number"
+        },
+        "min": {
+          "type": "number"
+        },
+        "max": {
+          "type": "number"
+        },
+        "label": {
+          "type": "string"
+        },
+        "orientation": {
+          "type": "string",
+          "values": ["arc", "linear"]
+        },
+        "notches": {
+          "type": "number"
+        },
+        "tone": {
+          "type": "string",
+          "values": ["accent", "success", "warning", "danger"]
+        },
+        "format": {
+          "type": "object"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "required": ["value"],
+      "slots": [],
+      "events": []
+    },
+    "RadarChart": {
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "data": {
+          "type": "array"
+        },
+        "max": {
+          "type": "number"
+        },
+        "format": {
+          "type": "object"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "required": ["data"],
+      "slots": [],
+      "events": []
+    },
+    "FunnelChart": {
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "data": {
+          "type": "array"
+        },
+        "orientation": {
+          "type": "string",
+          "values": ["vertical", "horizontal"]
+        },
+        "showPercentages": {
+          "type": "boolean"
+        },
+        "format": {
+          "type": "object"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "required": ["data"],
+      "slots": [],
+      "events": []
+    },
+    "Heatmap": {
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "data": {
+          "type": "array"
+        },
+        "format": {
+          "type": "object"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "required": ["data"],
+      "slots": [],
+      "events": []
+    },
+    "CandlestickChart": {
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "data": {
+          "type": "array"
+        },
+        "format": {
+          "type": "object"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "required": ["data"],
+      "slots": [],
+      "events": []
+    },
+    "NumericScatterChart": {
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "data": {
+          "type": "array"
+        },
+        "format": {
+          "type": "object"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "required": ["data"],
+      "slots": [],
+      "events": []
+    },
+    "RadialChart": {
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "data": {
+          "type": "array"
+        },
+        "max": {
+          "type": "number"
+        },
+        "format": {
+          "type": "object"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "required": ["data"],
+      "slots": [],
+      "events": []
+    },
+    "MetricGrid": {
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "metrics": {
+          "type": "array"
+        }
+      },
+      "required": ["metrics"],
+      "slots": [],
+      "events": []
+    },
+    "KPIGrid": {
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "metrics": {
+          "type": "array"
+        }
+      },
+      "required": ["metrics"],
+      "slots": [],
+      "events": []
+    },
+    "ComparisonList": {
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "items": {
+          "type": "array"
+        }
+      },
+      "required": ["items"],
+      "slots": [],
+      "events": []
+    },
+    "MeterList": {
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "items": {
+          "type": "array"
+        }
+      },
+      "required": ["items"],
+      "slots": [],
+      "events": []
+    },
+    "Image": {
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "images": {
+          "type": "array"
+        },
+        "variant": {
+          "type": "string",
+          "values": ["grid", "horizontal"]
+        }
+      },
+      "required": ["images"],
+      "slots": [],
+      "events": []
+    },
+    "RecordCard": {
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "fields": {
+          "type": "array"
+        },
+        "eyebrow": {
+          "type": "string"
+        },
+        "image": {
+          "type": "object"
+        },
+        "status": {
+          "type": "object"
+        },
+        "variant": {
+          "type": "string",
+          "values": ["surface", "outline", "clear"]
+        }
+      },
+      "required": [],
+      "slots": ["default"],
+      "events": []
+    },
+    "Icon": {
+      "properties": {
+        "name": {
+          "type": "string",
+          "values": [
+            "archive",
+            "arrow-up",
+            "bell",
+            "calendar-days",
+            "car-front",
+            "chart-column",
+            "check",
+            "chevron-down",
+            "chevron-left",
+            "chevron-right",
+            "circle-check",
+            "circle-dashed",
+            "circle-help",
+            "circle-x",
+            "clock",
+            "cloud",
+            "cloud-rain",
+            "cloud-sun",
+            "ellipsis",
+            "file-text",
+            "layout-grid",
+            "link",
+            "lock-keyhole",
+            "log-out",
+            "mail",
+            "message-circle",
+            "messages-square",
+            "mic",
+            "music-2",
+            "paperclip",
+            "pencil",
+            "plane",
+            "plus",
+            "route",
+            "search",
+            "settings",
+            "share",
+            "shield-check",
+            "snowflake",
+            "sparkles",
+            "star",
+            "sun",
+            "sun-moon",
+            "test-tube",
+            "user-round",
+            "users-round",
+            "video",
+            "wand-sparkles",
+            "wind",
+            "x"
+          ]
+        },
+        "size": {
+          "type": "number"
+        },
+        "label": {
+          "type": "string"
+        }
+      },
+      "required": ["name"],
+      "slots": [],
+      "events": []
+    },
+    "NumberField": {
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "value": {
+          "type": "number",
+          "writable": true
+        },
+        "disabled": {
+          "type": "boolean"
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "description": {
+          "type": "string"
+        },
+        "min": {
+          "type": "number"
+        },
+        "max": {
+          "type": "number"
+        },
+        "step": {
+          "type": "number"
+        }
+      },
+      "required": ["label", "value"],
+      "slots": [],
+      "events": ["focus", "blur", "change"]
+    },
+    "DatePicker": {
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "writable": true
+        },
+        "disabled": {
+          "type": "boolean"
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "required": ["label", "value"],
+      "slots": [],
+      "events": ["focus", "blur", "change"]
+    },
+    "TimeField": {
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "writable": true
+        },
+        "disabled": {
+          "type": "boolean"
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "required": ["label", "value"],
+      "slots": [],
+      "events": ["focus", "blur", "change"]
+    },
+    "DateRangePicker": {
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "value": {
+          "type": "array",
+          "writable": true
+        },
+        "disabled": {
+          "type": "boolean"
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "required": ["label", "value"],
+      "slots": [],
+      "events": ["focus", "blur", "change"]
+    },
+    "CheckboxGroup": {
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "value": {
+          "type": "array",
+          "writable": true
+        },
+        "disabled": {
+          "type": "boolean"
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "description": {
+          "type": "string"
+        },
+        "options": {
+          "type": "array"
+        }
+      },
+      "required": ["label", "value", "options"],
+      "slots": [],
+      "events": ["focus", "blur", "change"]
+    },
+    "ComboBox": {
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "value": {
+          "type": "array",
+          "writable": true
+        },
+        "disabled": {
+          "type": "boolean"
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "description": {
+          "type": "string"
+        },
+        "options": {
+          "type": "array"
+        },
+        "multiple": {
+          "type": "boolean"
+        }
+      },
+      "required": ["label", "value", "options"],
+      "slots": [],
+      "events": ["focus", "blur", "change"]
+    },
+    "ToggleGroup": {
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "value": {
+          "type": "array",
+          "writable": true
+        },
+        "disabled": {
+          "type": "boolean"
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "description": {
+          "type": "string"
+        },
+        "options": {
+          "type": "array"
+        },
+        "multiple": {
+          "type": "boolean"
+        }
+      },
+      "required": ["label", "value", "options"],
+      "slots": [],
+      "events": ["focus", "blur", "change"]
+    },
+    "Map": {
+      "properties": {
+        "locations": {
+          "type": "array"
+        },
+        "routes": {
+          "type": "array"
+        },
+        "arcs": {
+          "type": "array"
+        },
+        "title": {
+          "type": "string"
+        },
+        "initialLocationId": {
+          "type": "string"
+        }
+      },
+      "required": ["locations"],
+      "slots": [],
+      "events": []
+    },
+    "ProductCard": {
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "price": {
+          "type": "string"
+        },
+        "image": {
+          "type": "string"
+        },
+        "rating": {
+          "type": "number"
+        },
+        "badge": {
+          "type": "string"
+        },
+        "meta": {
+          "type": "string"
+        },
+        "reviewCount": {
+          "type": "number"
+        },
+        "amount": {
+          "type": "number"
+        },
+        "currency": {
+          "type": "string"
+        },
+        "badgeTone": {
+          "type": "string",
+          "values": ["accent", "neutral", "success", "warning", "danger"]
+        }
+      },
+      "required": ["name"],
+      "slots": ["default"],
+      "events": []
+    },
+    "ItemCard": {
+      "properties": {
+        "disabled": {
+          "type": "boolean"
+        },
+        "selected": {
+          "type": "boolean"
+        }
+      },
+      "required": [],
+      "slots": ["default", "leading", "trailing"],
+      "events": ["press"]
+    },
+    "ItemCardGroup": {
+      "properties": {
+        "layout": {
+          "type": "string",
+          "values": ["stack", "grid", "horizontal"]
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "required": [],
+      "slots": ["default"],
+      "events": []
+    },
+    "Dashboard": {
+      "properties": {
+        "layout": {
+          "type": "string",
+          "values": ["stack", "grid", "horizontal"]
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "required": [],
+      "slots": ["default"],
+      "events": []
+    },
+    "SwitchGroup": {
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "required": [],
+      "slots": ["default"],
+      "events": []
+    },
+    "Followup": {
+      "properties": {
+        "prompts": {
+          "type": "array"
+        },
+        "value": {
+          "type": "string",
+          "writable": true
+        }
+      },
+      "required": ["prompts", "value"],
+      "slots": [],
+      "events": ["press"]
+    },
+    "SunburstChart": {
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "data": {
+          "type": "array"
+        },
+        "format": {
+          "type": "object"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "required": ["data"],
+      "slots": [],
+      "events": []
+    },
+    "SankeyChart": {
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "nodes": {
+          "type": "array"
+        },
+        "links": {
+          "type": "array"
+        },
+        "format": {
+          "type": "object"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "required": ["nodes", "links"],
+      "slots": [],
+      "events": []
+    },
+    "GeneratedComposition": {
+      "properties": {
+        "kind": {
+          "type": "string",
+          "values": [
+            "create-event",
+            "view-event",
+            "playlist",
+            "flight-tracker",
+            "ride-status",
+            "purchase-complete",
+            "purchase-items",
+            "player-card",
+            "enable-notification",
+            "weather-forecast",
+            "weather-current",
+            "channel-message",
+            "event-session"
+          ]
+        },
+        "content": {
+          "type": "object"
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "required": ["kind", "content"],
+      "slots": ["default"],
+      "events": []
+    },
+    "ProductSignals": {
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "labels": {
+          "type": "array"
+        },
+        "defaultValue": {
+          "type": "number"
+        }
+      },
+      "required": ["labels"],
+      "slots": ["default"],
+      "events": []
+    },
+    "ListBlock": {
+      "properties": {
+        "items": {
+          "type": "array"
+        }
+      },
+      "required": ["items"],
+      "slots": [],
+      "events": []
+    },
+    "Diagram": {
+      "properties": {
+        "chart": {
+          "type": "string"
+        }
+      },
+      "required": ["chart"],
+      "slots": [],
+      "events": []
+    },
+    "ComposedChart": {
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "data": {
+          "type": "array"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "required": ["data"],
+      "slots": [],
+      "events": []
+    }
+  },
+  "actions": ["dispatch", "submitForm", "setState"]
+}

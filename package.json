@@ -1,0 +1,36 @@
+{
+  "name": "jarvis",
+  "version": "1.0.4",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "desktop": "node scripts/dev.mjs --native",
+    "build": "npm run typecheck && npm run build -w @openbot/desktop",
+    "typecheck": "tsc --noEmit -p apps/server/tsconfig.json && tsc --noEmit -p apps/bridge/tsconfig.json && tsc --noEmit -p apps/desktop/tsconfig.json",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "tauri:build": "node scripts/native-build.mjs",
+    "format": "prettier --write .github apps packages scripts tests *.ts *.json *.md docs third-party",
+    "format:check": "prettier --check .github apps packages scripts tests *.ts *.json *.md docs third-party",
+    "bridge": "npm run start -w @openbot/bridge",
+    "generate:ui": "node scripts/generate-ui-schema.mjs",
+    "build:runtime": "node scripts/build-runtime.mjs",
+    "release:check": "node scripts/check-release.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.56.0",
+    "ajv": "^8.20.0",
+    "esbuild": "^0.28.2",
+    "prettier": "^3.9.10",
+    "typescript": "^5.9.3",
+    "vitest": "^5.0.5"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.18.0"
+  }
+}

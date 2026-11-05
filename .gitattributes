@@ -1,0 +1,40 @@
+* text=auto
+*.sh text eol=lf
+*.mjs text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+*.rs text eol=lf
+*.sql text eol=lf
+*.png binary
+*.ico binary
+*.icns binary
+
+# Keep local state out of source archives, even if added by mistake.
+.env export-ignore
+.env.* export-ignore
+.env.example -export-ignore
+.data export-ignore
+config.env export-ignore
+model-settings.json export-ignore
+node_modules export-ignore
+test-results export-ignore
+playwright-report export-ignore
+coverage export-ignore
+apps/desktop/dist export-ignore
+apps/desktop/src-tauri/target export-ignore
+apps/desktop/src-tauri/gen export-ignore
+apps/desktop/src-tauri/runtime export-ignore
+*.p8 export-ignore
+*.cer export-ignore
+*.certSigningRequest export-ignore
+*.mobileprovision export-ignore
+*.provisionprofile export-ignore
+*.p12 export-ignore
+*.pfx export-ignore
+*.pem export-ignore
+*.key export-ignore
+*.keychain export-ignore
+*.keychain-db export-ignore
+*.dmg export-ignore
+*.zip export-ignore
+*.tar.gz export-ignore

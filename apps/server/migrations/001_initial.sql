@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS schema_migrations(version INTEGER PRIMARY KEY);
+CREATE TABLE IF NOT EXISTS workspace(id TEXT PRIMARY KEY, name TEXT NOT NULL, description TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS groups(id TEXT PRIMARY KEY, workspace_id TEXT NOT NULL REFERENCES workspace(id), name TEXT NOT NULL, description TEXT NOT NULL, created_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS bots(id TEXT PRIMARY KEY, workspace_id TEXT NOT NULL REFERENCES workspace(id), owner_id TEXT NOT NULL, name TEXT NOT NULL COLLATE NOCASE UNIQUE, description TEXT NOT NULL, provider TEXT NOT NULL, status TEXT NOT NULL DEFAULT 'offline', bridge_id TEXT, created_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS group_bots(group_id TEXT NOT NULL REFERENCES groups(id) ON DELETE CASCADE, bot_id TEXT NOT NULL REFERENCES bots(id) ON DELETE CASCADE, PRIMARY KEY(group_id,bot_id));
+CREATE TABLE IF NOT EXISTS messages(id TEXT PRIMARY KEY, group_id TEXT NOT NULL REFERENCES groups(id), sender_id TEXT NOT NULL, sender_type TEXT NOT NULL, content TEXT NOT NULL, mentions TEXT NOT NULL DEFAULT '[]', reply_to TEXT REFERENCES messages(id), timestamp TEXT NOT NULL, message_type TEXT NOT NULL, correlation_id TEXT);
+CREATE INDEX IF NOT EXISTS messages_group_time ON messages(group_id,timestamp);
+CREATE TABLE IF NOT EXISTS tasks(id TEXT PRIMARY KEY, group_id TEXT NOT NULL REFERENCES groups(id), bot_id TEXT NOT NULL REFERENCES bots(id), input TEXT NOT NULL, status TEXT NOT NULL, created_at TEXT NOT NULL, started_at TEXT, finished_at TEXT, result TEXT, error TEXT, correlation_id TEXT NOT NULL, round INTEGER NOT NULL DEFAULT 1);
+CREATE INDEX IF NOT EXISTS tasks_bot_status ON tasks(bot_id,status);
+INSERT OR IGNORE INTO schema_migrations(version) VALUES(1);

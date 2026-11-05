@@ -1,0 +1,171 @@
+{
+  "name": "information-gallery",
+  "title": "信息与交互组件",
+  "context": {
+    "threadId": "information-preview",
+    "viewId": "information-gallery",
+    "revision": 1
+  },
+  "spec": {
+    "root": "root",
+    "elements": {
+      "heading": {
+        "type": "Heading",
+        "props": {
+          "text": "Agent 信息组件",
+          "level": 2
+        },
+        "children": []
+      },
+      "callout": {
+        "type": "Callout",
+        "props": {
+          "title": "原生交互",
+          "content": "标签页和折叠区域在本机切换；复制按钮写入系统剪贴板。",
+          "tone": "success",
+          "icon": "clock"
+        },
+        "children": []
+      },
+      "tags": {
+        "type": "TagList",
+        "props": {
+          "tags": ["SwiftUI", "原生交互", "动态渲染"]
+        },
+        "children": []
+      },
+      "rating": {
+        "type": "Rating",
+        "props": {
+          "value": 4.5,
+          "count": 128
+        },
+        "children": []
+      },
+      "progress": {
+        "type": "Progress",
+        "props": {
+          "label": "实现进度示例",
+          "value": 65
+        },
+        "children": []
+      },
+      "overview-text": {
+        "type": "Text",
+        "props": {
+          "text": "概览内容；切换时先收起键盘并保留表单草稿。"
+        },
+        "children": []
+      },
+      "timeline": {
+        "type": "Timeline",
+        "props": {
+          "steps": [
+            {
+              "title": "收集需求",
+              "description": "确认输入与目标",
+              "status": "completed",
+              "image": {
+                "alt": "Visitors passing beneath a wooden torii at Meiji Jingu in the rain",
+                "src": "https://images.unsplash.com/photo-1663867384843-71ebf39ecd24?auto=format&fit=crop&w=1600&q=85"
+              }
+            },
+            {
+              "title": "生成界面",
+              "description": "使用明确的组件契约",
+              "status": "active"
+            },
+            {
+              "title": "提交结果",
+              "status": "pending"
+            }
+          ]
+        },
+        "children": []
+      },
+      "overview": {
+        "type": "Stack",
+        "props": {},
+        "children": ["overview-text", "timeline"]
+      },
+      "list": {
+        "type": "List",
+        "props": {
+          "items": ["统一视觉样式", "尊重减少动态效果设置", "支持系统文字选择"],
+          "style": "numbered"
+        },
+        "children": []
+      },
+      "code": {
+        "type": "CodeBlock",
+        "props": {
+          "language": "swift",
+          "code": "RendererView(session: session)\n    .tint(.purple)"
+        },
+        "children": []
+      },
+      "details": {
+        "type": "Stack",
+        "props": {},
+        "children": ["list", "code"]
+      },
+      "tabs": {
+        "type": "Tabs",
+        "props": {
+          "labels": ["概览", "详情"],
+          "defaultValue": 0
+        },
+        "children": ["overview", "details"]
+      },
+      "answer": {
+        "type": "Text",
+        "props": {
+          "text": "折叠区域使用弹簧动画，减少动态效果时直接切换。"
+        },
+        "children": []
+      },
+      "accordion": {
+        "type": "Accordion",
+        "props": {
+          "labels": ["交互说明"],
+          "multiple": false
+        },
+        "children": ["answer"]
+      },
+      "divider": {
+        "type": "Divider",
+        "props": {},
+        "children": []
+      },
+      "spacer": {
+        "type": "Spacer",
+        "props": {
+          "size": 8
+        },
+        "children": []
+      },
+      "root": {
+        "type": "Card",
+        "props": {
+          "title": "HeroUI Agents · Information"
+        },
+        "children": [
+          "heading",
+          "callout",
+          "tags",
+          "rating",
+          "progress",
+          "tabs",
+          "accordion",
+          "divider",
+          "spacer"
+        ]
+      }
+    }
+  },
+  "state": {
+    "data": {},
+    "form": {},
+    "ui": {}
+  }
+}

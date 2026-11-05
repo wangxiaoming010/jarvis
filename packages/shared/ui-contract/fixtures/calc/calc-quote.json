@@ -1,0 +1,170 @@
+{
+  "name": "calc-quote",
+  "title": "公式计算 · 报价",
+  "context": {
+    "threadId": "gallery",
+    "viewId": "calc-quote",
+    "revision": 1
+  },
+  "spec": {
+    "root": "card",
+    "elements": {
+      "card": {
+        "type": "Card",
+        "props": {
+          "title": "团队订阅报价"
+        },
+        "children": ["inputs", "addons", "metrics", "tier", "upsell"]
+      },
+      "inputs": {
+        "type": "Grid",
+        "props": {},
+        "children": ["plan", "seats", "yearly"]
+      },
+      "plan": {
+        "type": "Select",
+        "props": {
+          "label": "套餐",
+          "value": {
+            "$bindState": "/form/quote/plan"
+          },
+          "options": [
+            {
+              "label": "基础版 ¥49/席",
+              "value": "basic"
+            },
+            {
+              "label": "专业版 ¥99/席",
+              "value": "pro"
+            },
+            {
+              "label": "企业版 ¥199/席",
+              "value": "enterprise"
+            }
+          ]
+        },
+        "children": []
+      },
+      "seats": {
+        "type": "NumberField",
+        "props": {
+          "label": "席位数",
+          "value": {
+            "$bindState": "/form/quote/seats"
+          },
+          "min": 1,
+          "max": 500,
+          "step": 1
+        },
+        "children": []
+      },
+      "yearly": {
+        "type": "Switch",
+        "props": {
+          "label": "按年付费（付 10 个月）",
+          "value": {
+            "$bindState": "/form/quote/yearly"
+          }
+        },
+        "children": []
+      },
+      "addons": {
+        "type": "CheckboxGroup",
+        "props": {
+          "label": "附加服务",
+          "value": {
+            "$bindState": "/form/quote/addons"
+          },
+          "options": [
+            {
+              "label": "单点登录 ¥10/席",
+              "value": "sso"
+            },
+            {
+              "label": "审计日志 ¥300/月",
+              "value": "audit"
+            },
+            {
+              "label": "专属支持 ¥500/月",
+              "value": "support"
+            }
+          ]
+        },
+        "children": []
+      },
+      "metrics": {
+        "type": "MetricGrid",
+        "props": {
+          "metrics": [
+            {
+              "label": "每月费用",
+              "value": {
+                "$state": "/computed/monthlyText"
+              }
+            },
+            {
+              "label": "应付金额",
+              "value": {
+                "$state": "/computed/billedText"
+              }
+            },
+            {
+              "label": "每席每月",
+              "value": {
+                "$state": "/computed/perSeatText"
+              }
+            }
+          ]
+        },
+        "children": []
+      },
+      "tier": {
+        "type": "Badge",
+        "props": {
+          "label": {
+            "$state": "/computed/tierText"
+          },
+          "tone": "accent"
+        },
+        "children": []
+      },
+      "upsell": {
+        "type": "Callout",
+        "props": {
+          "tone": "accent",
+          "title": "建议考虑企业版",
+          "content": "超过 50 个席位时，企业版的权限管理和专属支持更划算。"
+        },
+        "children": [],
+        "visible": {
+          "$state": "/computed/suggestEnterprise",
+          "eq": true
+        }
+      }
+    }
+  },
+  "state": {
+    "data": {},
+    "form": {
+      "quote": {
+        "plan": "basic",
+        "seats": 10,
+        "yearly": false,
+        "addons": ["sso"]
+      }
+    },
+    "ui": {},
+    "computed": {
+      "unit": "form.quote.plan == 'enterprise' ? 199 : form.quote.plan == 'pro' ? 99 : 49",
+      "perSeatAddons": "has(form.quote.addons, 'sso') ? 10 : 0",
+      "flatAddons": "(has(form.quote.addons, 'audit') ? 300 : 0) + (has(form.quote.addons, 'support') ? 500 : 0)",
+      "discount": "form.quote.seats >= 20 ? 0.1 : 0",
+      "monthly": "(unit + perSeatAddons) * form.quote.seats * (1 - discount) + flatAddons",
+      "monthlyText": "currency(monthly, 0)",
+      "billedText": "currency(form.quote.yearly ? monthly * 10 : monthly, 0) + (form.quote.yearly ? ' / 年' : ' / 月')",
+      "perSeatText": "currency(monthly / form.quote.seats, 1)",
+      "tierText": "(discount > 0 ? '已享 9 折批量价' : '满 20 席享 9 折') + ' · ' + count(form.quote.addons) + ' 项附加服务'",
+      "suggestEnterprise": "form.quote.seats > 50 && form.quote.plan != 'enterprise'"
+    }
+  }
+}

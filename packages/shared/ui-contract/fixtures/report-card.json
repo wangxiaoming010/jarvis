@@ -1,0 +1,176 @@
+{
+  "name": "report-card",
+  "title": "报告卡与两个按钮",
+  "context": {
+    "threadId": "demo-conversation",
+    "viewId": "report-card",
+    "revision": 1
+  },
+  "spec": {
+    "root": "root",
+    "elements": {
+      "root": {
+        "type": "Card",
+        "props": {
+          "title": "直播报告 · 演示"
+        },
+        "children": ["notice", "metrics", "trend", "table"],
+        "slots": {
+          "footer": ["actions"]
+        }
+      },
+      "notice": {
+        "type": "Text",
+        "props": {
+          "text": "示例数据 · 主播 A · 昨日场次",
+          "variant": "caption"
+        },
+        "children": []
+      },
+      "metrics": {
+        "type": "Grid",
+        "props": {},
+        "children": ["gmv", "orders"]
+      },
+      "gmv": {
+        "type": "Metric",
+        "props": {
+          "label": "成交金额",
+          "value": {
+            "$state": "/data/report/gmv"
+          }
+        },
+        "children": []
+      },
+      "orders": {
+        "type": "Metric",
+        "props": {
+          "label": "订单数",
+          "value": {
+            "$state": "/data/report/orders"
+          }
+        },
+        "children": []
+      },
+      "trend": {
+        "type": "Chart",
+        "props": {
+          "title": "场次趋势",
+          "points": {
+            "$state": "/data/report/trend"
+          }
+        },
+        "children": []
+      },
+      "table": {
+        "type": "Table",
+        "props": {
+          "columns": [
+            {
+              "key": "name",
+              "label": "商品"
+            },
+            {
+              "key": "orders",
+              "label": "订单数"
+            }
+          ],
+          "rows": {
+            "$state": "/data/report/products"
+          }
+        },
+        "children": []
+      },
+      "actions": {
+        "type": "ActionGroup",
+        "props": {},
+        "children": ["details", "analyze"]
+      },
+      "details": {
+        "type": "Button",
+        "props": {
+          "label": "查看详情",
+          "variant": "secondary"
+        },
+        "children": [],
+        "on": {
+          "press": {
+            "action": "dispatch",
+            "params": {
+              "actionId": "demo.open-report",
+              "reportId": {
+                "$state": "/data/report/id"
+              }
+            }
+          }
+        }
+      },
+      "analyze": {
+        "type": "Button",
+        "props": {
+          "label": "继续分析",
+          "variant": "primary"
+        },
+        "children": [],
+        "on": {
+          "press": {
+            "action": "dispatch",
+            "params": {
+              "actionId": "demo.continue-analysis",
+              "reportId": {
+                "$state": "/data/report/id"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "state": {
+    "data": {
+      "report": {
+        "id": "demo-report-17",
+        "gmv": "¥12,480.00",
+        "orders": 126,
+        "trend": [
+          {
+            "x": "10:00",
+            "y": 16
+          },
+          {
+            "x": "11:00",
+            "y": 28
+          },
+          {
+            "x": "12:00",
+            "y": 23
+          },
+          {
+            "x": "13:00",
+            "y": 42
+          },
+          {
+            "x": "14:00",
+            "y": 35
+          }
+        ],
+        "products": [
+          {
+            "name": "商品 A",
+            "orders": 54
+          },
+          {
+            "name": "商品 B",
+            "orders": 39
+          },
+          {
+            "name": "商品 C",
+            "orders": 33
+          }
+        ]
+      }
+    },
+    "form": {},
+    "ui": {}
+  }
+}

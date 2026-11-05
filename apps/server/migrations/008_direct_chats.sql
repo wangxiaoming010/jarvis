@@ -1,0 +1,5 @@
+CREATE TABLE direct_chats(
+  group_id TEXT PRIMARY KEY REFERENCES groups(id) ON DELETE CASCADE,
+  bot_id TEXT NOT NULL UNIQUE REFERENCES bots(id) ON DELETE CASCADE
+);
+INSERT INTO schema_migrations(version) VALUES(8);

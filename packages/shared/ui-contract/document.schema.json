@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opsique.local/contracts/ui/0.1/document.schema.json",
+  "type": "object",
+  "required": ["protocolVersion", "context", "spec", "state"],
+  "additionalProperties": false,
+  "properties": {
+    "protocolVersion": {
+      "const": "opsique-ui/0.1"
+    },
+    "context": {
+      "type": "object",
+      "required": ["threadId", "viewId", "revision"],
+      "additionalProperties": false,
+      "properties": {
+        "threadId": {
+          "type": "string"
+        },
+        "viewId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "spec": {
+      "$ref": "spec.schema.json"
+    },
+    "state": {
+      "type": "object",
+      "required": ["data", "form", "ui"],
+      "additionalProperties": false,
+      "properties": {
+        "data": {
+          "type": "object"
+        },
+        "form": {
+          "type": "object"
+        },
+        "ui": {
+          "type": "object"
+        },
+        "computed": {
+          "description": "Read-only derived values. Each entry is a formula over form/data/ui and other entries, or a series {range, x?, y | series}. Components read them with $state: /computed/<name>. See README.md#computed-values.",
+          "type": "object",
+          "maxProperties": 48,
+          "propertyNames": {
+            "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
+          },
+          "additionalProperties": {
+            "oneOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 400
+              },
+              {
+                "type": "object",
+                "required": ["range"],
+                "additionalProperties": false,
+                "properties": {
+                  "range": {
+                    "type": "array",
+                    "minItems": 2,
+                    "maxItems": 3,
+                    "items": {
+                      "oneOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 400
+                        }
+                      ]
+                    }
+                  },
+                  "x": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 400
+                  },
+                  "y": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 400
+                  },
+                  "series": {
+                    "type": "object",
+                    "minProperties": 1,
+                    "maxProperties": 6,
+                    "additionalProperties": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 400
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

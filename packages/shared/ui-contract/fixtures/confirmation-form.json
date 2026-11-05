@@ -1,0 +1,123 @@
+{
+  "name": "confirmation-form",
+  "title": "参数表单与创建确认",
+  "context": {
+    "threadId": "demo-conversation",
+    "viewId": "confirmation-form",
+    "revision": 1
+  },
+  "spec": {
+    "root": "root",
+    "elements": {
+      "root": {
+        "type": "Card",
+        "props": {
+          "title": "生成报告 · 演示"
+        },
+        "children": ["intro", "fields"],
+        "slots": {
+          "footer": ["actions"]
+        }
+      },
+      "intro": {
+        "type": "Text",
+        "props": {
+          "text": "请补齐业务范围。点击创建后仅捕获演示动作，不会创建真实任务。",
+          "variant": "caption"
+        },
+        "children": []
+      },
+      "fields": {
+        "type": "Form",
+        "props": {},
+        "children": ["name", "period"]
+      },
+      "name": {
+        "type": "TextField",
+        "props": {
+          "label": "主播 / 业务对象",
+          "value": {
+            "$bindState": "/form/report/name"
+          },
+          "placeholder": "请输入对象",
+          "required": true,
+          "maxLength": 80
+        },
+        "children": []
+      },
+      "period": {
+        "type": "Select",
+        "props": {
+          "label": "时间范围",
+          "value": {
+            "$bindState": "/form/report/period"
+          },
+          "required": true,
+          "options": [
+            {
+              "label": "昨日",
+              "value": "yesterday"
+            },
+            {
+              "label": "最近七天",
+              "value": "last7days"
+            }
+          ]
+        },
+        "children": []
+      },
+      "actions": {
+        "type": "ActionGroup",
+        "props": {},
+        "children": ["clear", "submit"]
+      },
+      "clear": {
+        "type": "Button",
+        "props": {
+          "label": "清空对象",
+          "variant": "secondary"
+        },
+        "children": [],
+        "on": {
+          "press": {
+            "action": "setState",
+            "params": {
+              "statePath": "/form/report/name",
+              "value": ""
+            }
+          }
+        }
+      },
+      "submit": {
+        "type": "Button",
+        "props": {
+          "label": "确认创建",
+          "variant": "primary"
+        },
+        "children": [],
+        "on": {
+          "press": {
+            "action": "submitForm",
+            "params": {
+              "actionId": "demo.create-report",
+              "formPath": "/form/report",
+              "input": {
+                "$state": "/form/report"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "state": {
+    "data": {},
+    "form": {
+      "report": {
+        "name": "主播 A",
+        "period": "yesterday"
+      }
+    },
+    "ui": {}
+  }
+}
